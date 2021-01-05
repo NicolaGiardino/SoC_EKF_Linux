@@ -23,3 +23,14 @@ ToDo:
 Given the pandemic, no cell could be modeled in a laboratory environment. So i had to use the one given by G.L.Plett in its course on BMS, on Coursera, at the link below:
 
 https://www.coursera.org/specializations/algorithms-for-battery-management-systems
+
+This repository is structured as follows:
+
+master
+| csv - Contains the csv files of the Cell Model
+| logs - Contains the datalogger files
+| include - All the libraries used in the project
+| lib - .c files
+| Stub - Contains the Stub to test the main project
+|   | include - Contains the procedure library
+|   | lib - Contains the procedure source file
