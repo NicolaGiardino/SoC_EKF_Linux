@@ -27,10 +27,17 @@ https://www.coursera.org/specializations/algorithms-for-battery-management-syste
 This repository is structured as follows:
 
 master
+
 | csv - Contains the csv files of the Cell Model
+
 | logs - Contains the datalogger files
+
 | include - All the libraries used in the project
+
 | lib - .c files
+
 | Stub - Contains the Stub to test the main project
+
 |   | include - Contains the procedure library
+
 |   | lib - Contains the procedure source file
