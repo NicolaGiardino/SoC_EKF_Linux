@@ -21,4 +21,5 @@ ToDo:
 2. Study kthreads for implementation using kernel threads
 
 Given the pandemic, no cell could be modeled in a laboratory environment. So i had to use the one given by G.L.Plett in its course on BMS, on Coursera, at the link below:
+
 https://www.coursera.org/specializations/algorithms-for-battery-management-systems
