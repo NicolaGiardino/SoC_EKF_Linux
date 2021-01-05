@@ -15,3 +15,7 @@
     
 This repository contains the project on which I based my thesis on. 
 The thesis will be published here once it has been discussed.
+
+ToDo:
+1. Add a .c file that forks the Stub and the main program
+2. Study kthreads for implementation using kernel threads
