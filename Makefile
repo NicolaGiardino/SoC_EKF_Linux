@@ -1,7 +1,4 @@
-all:start
-
-sub-make:
-        $(MAKE) -C ./Stub/
+all:main
 
 matrix.o: ./lib/matrix.c ./include/matrix.h
 	gcc -c ./lib/matrix.c -g
@@ -15,19 +12,12 @@ libthreads.o: ./lib/libthreads.c ./include/libthreads.h
 procedure.o: ./lib/procedure.c ./include/procedure.h ./include/SOC_EKF.h ./include/libthreads.h
 	gcc -c ./lib/procedure.c -g
 
-main.o: main.c ./include/procedure.h 
+main.o: main.c ./include/procedure.h
 	gcc -c main.c
 
 main: main.o matrix.o SOC_EKF.o libthreads.o procedure.o
-	gcc -ggdb -o main main.o matrix.o SOC_EKF.o libthreads.o procedure.o -lm -lpthread -Wall
-#-lwiringPi -lwiringPiDev 
-
-start.c: start.c
-	gcc -c start.c -g
-
-start: start.o ./main ./Stub/main
-	gcc -o start.o -Wall
+	gcc -ggdb -o main main.o matrix.o SOC_EKF.o libthreads.o procedure.o -lm -lpthread
 
 clean:
-	rm -f *.o
+	rm -f ./*.o
 

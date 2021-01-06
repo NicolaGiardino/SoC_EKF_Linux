@@ -17,8 +17,7 @@ This repository contains the project on which I based my thesis on.
 The thesis will be published here once it has been discussed.
 
 ToDo:
-1. Add a .c file that forks the Stub and the main program
-2. Study kthreads for implementation using kernel threads
+1. Study kthreads for implementation using kernel threads
 
 Given the pandemic, no cell could be modeled in a laboratory environment. So i had to use the one given by G.L.Plett in its course on BMS, on Coursera, at the link below:
 
