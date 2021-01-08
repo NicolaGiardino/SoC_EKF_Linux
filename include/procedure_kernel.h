@@ -42,190 +42,54 @@
 #include <linux/kthread.h>			  /* kernel threads */
 #include <linux/sched.h>			   /* task_struct */
 #include <linux/delay.h>
+#include "SOC_EKF.h"
 
-
-
-MODULE_LICENSE("GPL");
+MODULE_LICENSE("GPL v3");
 MODULE_AUTHOR("di Gruttola Giardino Nicola");
 MODULE_DESCRIPTION("HuskyBMS Master");
 MODULE_VERSION("0.0.1");            /* Alpha Version */
 
-dev_t dev = 0;
-static struct class* dev_class;
-static struct cdev etx_cdev;
+/* Definition of Macros */
 
-static int __init etx_driver_init(void);
-static void __exit etx_driver_exit(void);
+#define SOC_RANGE 0.05f /* Maximum difference in SoC between two cells */
 
-static struct task_struct* etx_thread;
+#define NTHREADS 2 /* Number of threads to be created */
+#define KALMAN 0   /* Kalman thread index */
+#define END 1      /* End thread index */
 
-/*
-** Function Prototypes
-*/
-/*************** Driver Fuctions **********************/
-static int etx_open(struct inode* inode, struct file* file);
-static int etx_release(struct inode* inode, struct file* file);
-static ssize_t etx_read(struct file* filp,
-    char __user* buf, size_t len, loff_t* off);
-static ssize_t etx_write(struct file* filp,
-    const char* buf, size_t len, loff_t* off);
-/******************************************************/
+#define RASPI_SOC 0
 
-int thread_function(void* pv);
+#if RASPI_SOC
 
-/*
-** Thread
-*/
-int thread_function(void* pv)
+#include <wiringPi.h>
+#include <lcd.h>
+
+/* USE WIRINGPI PIN NUMBERS */
+#define LCD_RS 25 /* Register select pin */
+#define LCD_E 24  /* Enable Pin */
+#define LCD_D4 23 /* Data pin D4 */
+#define LCD_D5 22 /* Data pin D5 */
+#define LCD_D6 21 /* Data pin D6 */
+#define LCD_D7 14 /* Data pin D7 */
+
+#endif
+
+/* Declare Global Variables */
+
+struct KalmanForThread /* Structure containing the argument to be passed to the threads */
 {
-    int i = 0;
-    while (!kthread_should_stop()) {
-        printk(KERN_INFO "In EmbeTronicX Thread Function %d\n", i++);
-        msleep(1000);
-    }
-    return 0;
-}
 
-/*
-** File operation sturcture
-*/
-static struct file_operations fops =
-{
-        .owner = THIS_MODULE,
-        .read = etx_read,
-        .write = etx_write,
-        .open = etx_open,
-        .release = etx_release,
+    Kalman k;                        /* Kalman structure definition */
+    struct threads thread[NTHREADS]; /* Thread strucutre definition */
 };
 
-/*
-** This fuction will be called when we open the Device file
-*/
-static int etx_open(struct inode* inode, struct file* file)
-{
-    printk(KERN_INFO "Device File Opened...!!!\n");
-    return 0;
-}
+/* Declare Static Variables */
 
-/*
-** This fuction will be called when we close the Device file
-*/
-static int etx_release(struct inode* inode, struct file* file)
-{
-    printk(KERN_INFO "Device File Closed...!!!\n");
-    return 0;
-}
-
-/*
-** This fuction will be called when we read the Device file
-*/
-static ssize_t etx_read(struct file* filp,
-    char __user* buf, size_t len, loff_t* off)
-{
-    printk(KERN_INFO "Read function\n");
-
-    return 0;
-}
-
-/*
-** This fuction will be called when we write the Device file
-*/
-static ssize_t etx_write(struct file* filp,
-    const char __user* buf, size_t len, loff_t* off)
-{
-    printk(KERN_INFO "Write Function\n");
-    return len;
-}
-
-/*
-** Module Init function
-*/
-static int __init etx_driver_init(void)
-{
-    /*Allocating Major number*/
-    if ((alloc_chrdev_region(&dev, 0, 1, "etx_Dev")) < 0) {
-        printk(KERN_INFO "Cannot allocate major number\n");
-        return -1;
-    }
-    printk(KERN_INFO "Major = %d Minor = %d \n", MAJOR(dev), MINOR(dev));
-
-    /*Creating cdev structure*/
-    cdev_init(&etx_cdev, &fops);
-
-    /*Adding character device to the system*/
-    if ((cdev_add(&etx_cdev, dev, 1)) < 0) {
-        printk(KERN_INFO "Cannot add the device to the system\n");
-        goto r_class;
-    }
-
-    /*Creating struct class*/
-    if ((dev_class = class_create(THIS_MODULE, "etx_class")) == NULL) {
-        printk(KERN_INFO "Cannot create the struct class\n");
-        goto r_class;
-    }
-
-    /*Creating device*/
-    if ((device_create(dev_class, NULL, dev, NULL, "etx_device")) == NULL) {
-        printk(KERN_INFO "Cannot create the Device \n");
-        goto r_device;
-    }
-
-    etx_thread = kthread_create(thread_function, NULL, "eTx Thread");
-    if (etx_thread) {
-        wake_up_process(etx_thread);
-    }
-    else {
-        printk(KERN_ERR "Cannot create kthread\n");
-        goto r_device;
-    }
-    printk(KERN_INFO "Device Driver Insert...Done!!!\n");
-    return 0;
+static int exit_threads = 0;
+static int lcdAddress;
 
 
-r_device:
-    class_destroy(dev_class);
-r_class:
-    unregister_chrdev_region(dev, 1);
-    cdev_del(&etx_cdev);
-    return -1;
-}
-
-/*
-** Module exit function
-*/
-static void __exit etx_driver_exit(void)
-{
-    kthread_stop(etx_thread);
-    device_destroy(dev_class, dev);
-    class_destroy(dev_class);
-    cdev_del(&etx_cdev);
-    unregister_chrdev_region(dev, 1);
-    printk(KERN_INFO "Device Driver Remove...Done!!\n");
-}
-
-
-static int __init hello_init(void)
-{
-    printk(KERN_INFO "Hello world!\n");
-    return 0;    // Non-zero return means that the module couldn't be loaded.
-}
-
-static void __exit hello_cleanup(void)
-{
-    printk(KERN_INFO "Cleaning up module.\n");
-}
-
-module_init(hello_init);
-module_exit(hello_cleanup);
-
-
-
-
-
-
-
-
-
+int thread_function(void* pv);
 
 
 #endif
