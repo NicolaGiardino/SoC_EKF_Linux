@@ -22,8 +22,6 @@
 #ifndef PROCEDURE_KERNEL_H
 #define PROCEDURE_KERNEL_H
 
-/* THIS IS JUST A FOUND PROTOTYPE OF KERNEL THREADS, TO BE MODIFIED AFTER HAVING TESTED AND DEBUGGED USER LEVEL */
-
 /* Include Global Parameters */
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,9 +51,9 @@ MODULE_VERSION("0.0.1");            /* Alpha Version */
 
 #define SOC_RANGE 0.05f /* Maximum difference in SoC between two cells */
 
-#define NTHREADS 2 /* Number of threads to be created */
-#define KALMAN 0   /* Kalman thread index */
-#define END 1      /* End thread index */
+#define NTHREADS  2      /* Number of threads to be created */
+#define KALMAN    0          /* Kalman thread index */
+#define END       1           /* End thread index */
 
 #define RASPI_SOC 0
 
@@ -88,8 +86,24 @@ struct KalmanForThread /* Structure containing the argument to be passed to the 
 static int exit_threads = 0;
 static int lcdAddress;
 
+/* Declare Prototypes */
 
-int thread_function(void* pv);
+void vKill_handler();
+int iGetExit();
+
+/* Threads Prototypes */
+int  iKalmanThread(void *arg);
+int  iEndThread(void *arg);
+
+/* Periodic and Aperiodic Functions*/
+void vKalmanLoop(Kalman *k, int s);
+void vEndLoop(int s);
+
+#ifdef RASPI_SOC
+/* Define lcd 16x2 display functions */
+void vInitLCD();
+void vPrintLCD(float val[2]);
+#endif
 
 
 #endif

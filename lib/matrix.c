@@ -1657,7 +1657,7 @@ float iInterp1(float x_new, float* x, float* y)
 *                                                                               *
 * RETURN VALUE: float*                                                          *
 ********************************************************************************/
-float* pfCsvToFloat(const char* path, int* dim)
+float* pxCsvToFloat(const char* path, int* dim)
 {
     FILE* myFile;
     int n = 0, i = 0;
@@ -1755,8 +1755,11 @@ float fRandn()
 * --------- --------     --     ---------------------------------               *
 * none                                                                          *
 *                                                                               *
-* RETURN VALUE: int                                                             *
+* RETURN VALUE: __u32                                                           *
 ********************************************************************************/
-int uGetHeapUsage(){
-  return heap_usage;
+__u32 uGetHeapUsage()
+{
+
+    return heap_usage;
+
 }

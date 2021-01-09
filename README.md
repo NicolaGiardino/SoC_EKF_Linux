@@ -40,3 +40,15 @@ This repository is structured as follows:
 	|   | include - Contains the procedure library
 
 	|   | lib - Contains the procedure source file
+
+
+The nomenclature used with the functions in this project is strctured in a way that the first one/two lower case letters of the function represent its return type, and are followed by an upper case letter. 
+E.g.:
+    pv pointer to void
+    px pointer
+    i  int
+    f  float
+    l  long
+    v  void
+    l  long
+    u  __u32

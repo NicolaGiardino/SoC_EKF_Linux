@@ -90,7 +90,7 @@
 
 /* Declare Static Variables */
 
-static unsigned int heap_usage = 0 ;
+static __u32 heap_usage = 0 ;
 
 /* Declare Global Variables */
 
@@ -126,7 +126,7 @@ int      iSubtract       (Matrix*, Matrix *, Matrix *);
 Matrix*  pxSubtract      (Matrix*, Matrix*);              
 int      iSc_Multiply    (Matrix*, Matrix *, float);      
 Matrix*  pxSc_Multiply   (Matrix*, float);                
-int		   iInverse        (Matrix *,Matrix *);             
+int		 iInverse        (Matrix *,Matrix *);             
 Matrix*  pxInverse       (Matrix*);                     //Not working for now             
 int      iIdentity       (Matrix *);                      
 Matrix*  pxIdentity      (int);                           
@@ -149,14 +149,14 @@ int      iSqrtm          (Matrix*, Matrix *);
 Matrix*  pxSqrtm         (Matrix*);                       
 int      iExpm           (Matrix*, Matrix *, float);      
 Matrix*  pxExpm          (Matrix*, float);                
-int		   iBlkdiag        (Matrix*,Matrix *, Matrix *, Matrix *); 
+int		 iBlkdiag        (Matrix*,Matrix *, Matrix *, Matrix *); 
 Matrix*  pxBlkdiag       (Matrix*, Matrix*, Matrix*);     
-int 	   iDiag           (Matrix *, Matrix *);            
+int 	 iDiag           (Matrix *, Matrix *);            
 Matrix*  pxDiag          (Matrix*);                       
 float    fInterp1        (float , float *, float *);      
-float*   pfCsvToFloat    (const char *, int*);            
+float*   pxCsvToFloat    (const char *, int*);            
 float    fRandn          ();                              
 void     vSeed           (const float);                   
-int      uGetHeapUsage   ();                              
+__u32    uGetHeapUsage   ();                              
 
 #endif /* matrix_h */

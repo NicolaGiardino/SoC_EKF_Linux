@@ -1,89 +1,12 @@
-/****************************************************************************************
-* This file is part of The SoC_EKF_Linux Project.                                       *
-*                                                                                       *
-* Copyright � 2020-2021 By Nicola di Gruttola Giardino. All rights reserved.           * 
-* @mail: nicoladgg@protonmail.com                                                       *
-*                                                                                       *
-* SoC_EKF_Linux is free software: you can redistribute it and/or modify                 *
-* it under the terms of the GNU General Public License as published by                  *
-* the Free Software Foundation, either version 3 of the License, or                     *
-* (at your option) any later version.                                                   *
-*                                                                                       *
-* SoC_EKF_Linux is distributed in the hope that it will be useful,                      *
-* but WITHOUT ANY WARRANTY; without even the implied warranty of                        *
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                         *
-* GNU General Public License for more details.                                          *
-*                                                                                       *
-* You should have received a copy of the GNU General Public License                     *
-* along with The SoC_EKF_Linux Project.  If not, see <https://www.gnu.org/licenses/>.   *
-*                                                                                       *
-* In case of use of this project, I ask you to mention me, to whom it may concern.      *
-*****************************************************************************************/
-
-/****************************************************************************************************
-* FILE NAME: procedure.c                                                                            *
-*                                                                                                   *
-* PURPOSE: This library is used to implement all the threads and the relative funcions              *
-*               to be used in the main of the Master                                                *
-*                                                                                                   *
-* FILE REFERENCES:                                                                                  *
-*                                                                                                   *
-*   Name    I/O     Description                                                                     *
-*   ----    ---     -----------                                                                     *
-*   none                                                                                            *
-*                                                                                                   *
-*                                                                                                   *
-* EXTERNAL VARIABLES:                                                                               *
-*                                                                                                   *
-* Source: <procedure.h>                                                                             *
-*                                                                                                   *
-* Name          Type    IO Description                                                              *
-* ------------- ------- -- -----------------------------                                            *
-*                                                                                                   *
-*                                                                                                   *
-* STATIC VARIABLES:                                                                                 *
-*                                                                                                   *
-*   Name     Type       I/O      Description                                                        *
-*   ----     ----       ---      -----------                                                        *
-*   current  float[][]           Current of cells                                                   *
-*   voltage  float[][]           Voltage of cells                                                   *
-*   Temp     int                 Temperature of cells                                               *
-*                                                                                                   *
-* EXTERNAL REFERENCES:                                                                              *
-*                                                                                                   *
-*  Name                       Description                                                           *
-*  -------------              -----------                                                           *
-*  none                                                                                             *
-*                                                                                                   *
-* ABNORMAL TERMINATION CONDITIONS, ERROR AND WARNING MESSAGES:                                      *
-*    none, compliant with the standard ISO9899:1999                                                 *
-*                                                                                                   *
-* ASSUMPTIONS, CONSTRAINTS, RESTRICTIONS: tbd                                                       *
-*                                                                                                   *
-* NOTES: see documentations                                                                         *
-*                                                                                                   *
-* REQUIREMENTS/FUNCTIONAL SPECIFICATIONS REFERENCES:                                                *
-*                                                                                                   *
-* DEVELOPMENT HISTORY:                                                                              *
-*                                                                                                   *
-*   Date          Author            Change Id     Release     Description Of Change                 *
-*   ----          ------            ---------     ------      ----------------------                *
-*   28-12-2020    N.di Gruttola                    1          V1 Created					        *
-*                  Giardino																		    *
-*                                                                                                   *
-*                                                                                                   *
-*                                                                                                   *
-****************************************************************************************************/
-
-#include "../include/procedure.h"
+#include "../include/procedure_kernel.h"
 
 /* Declare global variables */
 
 static int SlaveNo = 0;
 
-static float current [PAR * SER];
-static float voltage [SER];
-static int Temp      [PAR * SER];
+static float current[PAR * SER];
+static float voltage[SER];
+static int Temp[PAR * SER];
 
 static int iSearch_Min(float[], int);
 
@@ -109,7 +32,7 @@ int iGetExit() { return exit_threads; }
 *                                                                               *
 ********************************************************************************/
 
-void vKalmanLoop(Kalman* k, int s)
+void vKalmanLoop(Kalman *k, int s)
 {
     /* LOCAL VARIABLES:
     * Variable      Type           	    Description
@@ -159,12 +82,11 @@ void vKalmanLoop(Kalman* k, int s)
     /* Receive CTS from CAN */
     vRcv_can16(s, &frame);
 
-    
 #if DEBUG
-        printf("Receiving data\n");
+    printf("Receiving data\n");
 #endif
 
-    if(frame.dlc == 0 && frame.can_id == filter.can_id)
+    if (frame.dlc == 0 && frame.can_id == filter.can_id)
     {
         for (i = 0; i < PAR * SER; i++)
         {
@@ -198,14 +120,13 @@ void vKalmanLoop(Kalman* k, int s)
     printf("Frame data: %f %f %d\n", current[0], voltage[0], Temp[0]);
 #endif
 
-
 #if DEBUG
     printf("EKF\n");
 #endif
 
     EKF_Step1(k, current, Temp[0]);
     EKF_Step2(k, voltage, Temp[0]);
-    
+
 #if DEBUG_PRINTSOC
     printf("The soc is: %f.2%%\n", k->x->matrix[Z_IND][0] * 100);
 #endif
@@ -238,11 +159,10 @@ void vKalmanLoop(Kalman* k, int s)
 
     /* Send via CAN */
     frame64.can_id = MASTER | DATA_MSG | SlaveNo;
-    frame64.dlc  = CAN_MAX_DLEN_16;
+    frame64.dlc = CAN_MAX_DLEN_16;
     frame64.data = soc;
-    
-    vSnd_can64(s, &frame64);
 
+    vSnd_can64(s, &frame64);
 }
 
 /********************************************************************************
@@ -261,7 +181,7 @@ void vKalmanLoop(Kalman* k, int s)
 ********************************************************************************/
 
 void vEndLoop(int s)
-{ 
+{
     /* LOCAL VARIABLES:
     * Variable      Type           	    Description
     * ------------- -------        	    ---------------
@@ -276,7 +196,6 @@ void vEndLoop(int s)
 
     vKill_handler();
 }
-
 
 /********************************************************************************
 *                                                                               *
@@ -296,7 +215,7 @@ void vEndLoop(int s)
 *                                                                               *
 ********************************************************************************/
 
-void* pvKalmanThread(void* ktof)
+int iKalmanThread(void *ktof)
 {
     /* LOCAL VARIABLES:
     * Variable      Type           	        Description
@@ -318,7 +237,7 @@ void* pvKalmanThread(void* ktof)
     struct KalmanForThread *kf = (struct KalmanForThread *)ktof;
 
     struct period_info pinfo;
-    struct timespec    passed_ms;
+    struct timespec passed_ms;
 
     struct can_filter filter;
     struct can_frame16 frame;
@@ -353,7 +272,6 @@ void* pvKalmanThread(void* ktof)
     filter.can_mask = SLAVE_MASK;
     vBind_can(s, filter, 1);
 
-
     filter.can_id = SLAVE | DATA_MSG | CTS | SlaveNo; /* 0b001100SlaveNo */
     filter.can_mask = SLAVE_MASK;
     setsockopt(s, SOL_CAN_RAW, CAN_RAW_FILTER, &filter, sizeof(filter));
@@ -387,9 +305,9 @@ void* pvKalmanThread(void* ktof)
             c_assert(frame.dlc == (CAN_MAX_DLEN_16 * 2));
             dataint.u16[0] = frame.data[CELL1];
             dataint.u16[1] = frame.data[CELL2];
-            NoOfCell       = dataint.n;
-            data.u16[0]    = frame.data[CURR1];
-            data.u16[1]    = frame.data[CURR2];
+            NoOfCell = dataint.n;
+            data.u16[0] = frame.data[CURR1];
+            data.u16[1] = frame.data[CURR2];
             current[NoOfCell] = data.f;
 
             //Receive Voltage data
@@ -423,7 +341,7 @@ void* pvKalmanThread(void* ktof)
 
     printf("Starting Kalman Loop\n");
 
-    while(!iGetExit())
+    while (!iGetExit())
     {
 
         passed_ms.tv_nsec = lRt_gettime();
@@ -437,23 +355,19 @@ void* pvKalmanThread(void* ktof)
         vStoreData(val, index);
         index++;
 
-            /* Wait period */
-            /*
+        /* Wait period */
+        /*
          * Modify this to make wait for the rest of the real period                 *
          * (ex it took 1ms to compute, the delta_t is 15ms, so final wait is 14ms)  *
          */
-            passed_ms.tv_nsec = lRt_gettime() - passed_ms.tv_nsec;
+        passed_ms.tv_nsec = lRt_gettime() - passed_ms.tv_nsec;
         vWait_rest_of_period(&pinfo, &passed_ms);
-
     }
-
-    pthread_exit(NULL);
-
 }
 
 /********************************************************************************
 *                                                                               *
-* FUNCTION NAME: pvEndThread                                                    *
+* FUNCTION NAME: iEndThread                                                     *
 *                                                                               *
 * PURPOSE: This thread is used to receive the end of test message from the Stub *
 * ARGUMENT LIST:                                                                *
@@ -462,11 +376,11 @@ void* pvKalmanThread(void* ktof)
 * --------- --------     --     ---------------------------------               *
 * args      void*        IO     Input to the thread                             *
 *                                                                               *
-* RETURN VALUE: NULL                                                            *
+* RETURN VALUE: int                                                             *
 *                                                                               *
 ********************************************************************************/
 
-void *pvEndThread(void *args)
+int iEndThread(void *args)
 {
     /* LOCAL VARIABLES:
     * Variable      Type           	        Description
@@ -484,15 +398,11 @@ void *pvEndThread(void *args)
 
     vBind_can(s, filter, 1);
 
-    while(!iGetExit())
+    while (!iGetExit())
     {
         vEndLoop(s);
     }
-
-    pthread_exit(NULL);
-
 }
-
 
 /********************************************************************************
 *                                                                               *
@@ -512,7 +422,7 @@ void *pvEndThread(void *args)
 ********************************************************************************/
 
 static int iSearch_Min(float arr[], int n)
-{ 
+{
     /* LOCAL VARIABLES:
     * Variable      Type      Description
     * ------------- -------   ---------------
@@ -545,7 +455,6 @@ static int iSearch_Min(float arr[], int n)
     }
 
     return i;
-
 }
 
 #if RASPI_SOC
@@ -569,7 +478,6 @@ int iInitLCD()
 
     wiringPiSetup();
     lcdIndex = lcdInit(2, 16, 8, LCD_RS, LCD_E, LCD_D0, LCD_D1, LCD_D2, LCD_D3, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
-
 }
 
 /********************************************************************************
