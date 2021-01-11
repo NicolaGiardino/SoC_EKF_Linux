@@ -44,19 +44,19 @@ The nomenclature used with the functions in this project is strctured in a way t
 
 E.g.:
 
-    pv pointer to void
+    pv  pointer to void
 
-    px pointer
+    px  pointer
 
-    i  int
+    i   int
 
-    f  float
+    f   float
 
-    l  long
+    l   long
 
-    v  void
+    v   void
 
-    l  long
+    l   long
 
-    u  __u32
+    u   __u32
  
