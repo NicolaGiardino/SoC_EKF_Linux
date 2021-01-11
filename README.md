@@ -15,13 +15,10 @@
     
 This repository contains the project on which I based my thesis on. 
 The thesis will be published here once it has been discussed.
+ 
+Given the pandemic, no cell could be modeled in a laboratory environment. So I had to use the one given by G.L.Plett in its course on BMS, on Coursera, at the link below:
 
-ToDo:
-1. Study kthreads for implementation using kernel threads
-
-Given the pandemic, no cell could be modeled in a laboratory environment. So i had to use the one given by G.L.Plett in its course on BMS, on Coursera, at the link below:
-
-https://www.coursera.org/specializations/algorithms-for-battery-management-systems
+	https://www.coursera.org/specializations/algorithms-for-battery-management-systems
 
 This repository is structured as follows:
 
@@ -52,3 +49,4 @@ E.g.:
     v  void
     l  long
     u  __u32
+ 

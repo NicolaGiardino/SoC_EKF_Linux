@@ -97,7 +97,7 @@ static int    row_scalar_multiply  (Matrix *, int , float);
 *           returning the pointer to the created matrix                         *
 *                                                                               *
 * ARGUMENT LIST:                                                                *
-*                                                                               *
+*                                                                               *  
 * Argument  Type         IO     Description                                     *
 * --------- --------     --     ---------------------------------               *
 * r         int          I      Number of rows                                  *

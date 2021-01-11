@@ -151,6 +151,7 @@ int main()
      * A second thread must:
      *   +Send an error message after a random no of seconds to test the error thread.
      *   +It must call for a SIGINT after having sent the error message (call kill_handler())
+     * Add Stub print
     */
 
     struct threads thread;

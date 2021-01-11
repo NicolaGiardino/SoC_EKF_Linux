@@ -60,8 +60,8 @@
 *                                                                                                  *
 ***************************************************************************************************/
 
-#ifndef matrix_h
-#define matrix_h
+#ifndef MATRIX_h
+#define MATRIX_h
 
 /* Include Global Parameters */
 
