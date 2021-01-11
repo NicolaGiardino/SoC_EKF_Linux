@@ -14,6 +14,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
 This repository contains the project on which I based my thesis on. 
+
 The thesis will be published here once it has been discussed.
  
 Given the pandemic, no cell could be modeled in a laboratory environment. So I had to use the one given by G.L.Plett in its course on BMS, on Coursera, at the link below:
@@ -40,13 +41,22 @@ This repository is structured as follows:
 
 
 The nomenclature used with the functions in this project is strctured in a way that the first one/two lower case letters of the function represent its return type, and are followed by an upper case letter. 
+
 E.g.:
+
     pv pointer to void
+
     px pointer
+
     i  int
+
     f  float
+
     l  long
+
     v  void
+
     l  long
+
     u  __u32
  
