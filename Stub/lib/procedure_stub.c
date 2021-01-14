@@ -118,6 +118,7 @@ void vStubSendData(int s, size_t i, Matrix* input)
 	setsockopt(s, SOL_CAN_RAW, CAN_RAW_FILTER, &filter, sizeof(filter));
 
 #if DEBUG_PRINT
+	printf("[STUB] ");
 	printf("Waiting for RTS\n");
 #endif
 
@@ -127,17 +128,20 @@ void vStubSendData(int s, size_t i, Matrix* input)
 	frame.dlc	 = 0;
 
 #if DEBUG_PRINT
+	printf("[STUB] ");
 	printf("Sending CTS\n");
 #endif
 	vSnd_can16(s, &frame);
 
 #if DEBUG_PRINT
+	printf("[STUB] ");
 	printf("Sending data\n");
 #endif
 
 	for (j = 0; j < PAR * SER; j++)
 	{
 #if DEBUG_PRINT
+        printf("[STUB] ");
 		printf("Sending data\n");
 #endif
 		/* Sending Current and Temp data */
@@ -169,6 +173,7 @@ void vStubSendData(int s, size_t i, Matrix* input)
 		setsockopt(s, SOL_CAN_RAW, CAN_RAW_FILTER, &filter, sizeof(filter));
 		vRcv_can64(s, &f64);
 #if DEBUG_PRINT
+		printf("[STUB] ");
 		printf("Message Received from %#08x: %#08x\n", frame.can_id, frame.data);
 #endif
 		/* Here the Slave should activate the discharge on the right cells */
@@ -240,6 +245,7 @@ void *pvStubThread(void *args)
 	int s;
 	struct can_filter filter;
 
+	printf("[STUB] ");
 	printf("Stub Init\n");
 	printf("%d\n", input->c);
 	s = iInit_can();
@@ -248,6 +254,7 @@ void *pvStubThread(void *args)
 	filter.can_mask = CAN_MASK;
 	vBind_can(s, filter, 1);
 
+	printf("[STUB] ");
 	printf("Sending data\n");
 
 	vStubSendData(s, 0, input);
@@ -255,6 +262,7 @@ void *pvStubThread(void *args)
 	for (i = 0; i < 1500; i++)
 	{
 #if DEBUG3
+		printf("[STUB] ");
 		printf("Sending data %d\n", i);
 #endif
 		vStubSendData(s, i, input);
@@ -265,6 +273,7 @@ void *pvStubThread(void *args)
 
 	}
 
+	printf("[STUB] ");
 	printf("Sending end of test\n");
 	vStubEnd(s);
 	quit_handler();
@@ -341,7 +350,10 @@ void vFinalStoreStub()
 
 #if DEBUG4
 	for (size_t j = 0; j < 10; j++)
+	{
+		printf("[STUB] ");
 		printf("%f\n", val[j]);
+	}
 #endif
 
 	file = fopen("../SOC_True.txt", "w");

@@ -102,24 +102,30 @@ int main()
         {
         case(TIME):
             myFile = fopen("../csv/CellDataTime.csv", "r");
+            printf("[STUB] ");
             printf("TIME\n");
             break;
         case(VOLTAGE):
             myFile = fopen("../csv/CellDataVoltage.csv", "r");
+            printf("[STUB] ");
             printf("VOLTAGE\n");
             break;
         case(CURRENT):
             myFile = fopen("../csv/CellDataCurrent.csv", "r");
+            printf("[STUB] ");
             printf("CURRENT\n");
             break;
         case(SOC):
             myFile = fopen("../csv/CellDataSOC.csv", "r");
+            printf("[STUB] ");
             printf("SOC\n");
             break;
         default:
             break;
         }
-        if (myFile == NULL) {
+        if (myFile == NULL)
+        {
+            printf("[STUB] ");
             perror("failed to open file");
             return 1;
         }

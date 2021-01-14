@@ -1,23 +1,31 @@
-all:main
+all:start
+
+sub-make:
+        $(MAKE) -C ./Stub/
 
 matrix.o: ./lib/matrix.c ./include/matrix.h
-	gcc -c ./lib/matrix.c -g
+	gcc -Wall -Wextra -c ./lib/matrix.c -g
 
 SOC_EKF.o: ./lib/SOC_EKF.c ./include/SOC_EKF.h ./include/matrix.h
-	gcc -c ./lib/SOC_EKF.c -g
+	gcc -Wall -Wextra -c ./lib/SOC_EKF.c -g
 
 libthreads.o: ./lib/libthreads.c ./include/libthreads.h
-	gcc -c ./lib/libthreads.c -g
+	gcc -Wall -Wextra -c ./lib/libthreads.c -g
 
 procedure.o: ./lib/procedure.c ./include/procedure.h ./include/SOC_EKF.h ./include/libthreads.h
-	gcc -c ./lib/procedure.c -g
+	gcc -Wall -Wextra -c ./lib/procedure.c -g
 
-main.o: main.c ./include/procedure.h
-	gcc -c main.c
+main.o: main.c ./include/procedure.h 
+	gcc -Wall -Wextra -c main.c -g
 
 main: main.o matrix.o SOC_EKF.o libthreads.o procedure.o
-	gcc -ggdb -o main main.o matrix.o SOC_EKF.o libthreads.o procedure.o -lm -lpthread
+	gcc -ggdb -o main main.o matrix.o SOC_EKF.o libthreads.o procedure.o -lm -lpthread -lwiringPi -lwiringPiDev 
+
+start.c: start.c
+	gcc -Wall -Wextra -c start.c -g
+
+start: start.o ./main ./Stub/main
+	gcc -o start.o
 
 clean:
-	rm -f ./*.o
-
+	rm -f *.o
