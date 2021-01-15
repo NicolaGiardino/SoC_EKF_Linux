@@ -34,7 +34,7 @@
 #define KALMAN              0           /* Kalman thread index */
 #define END                 1            /* End thread index */
 
-#define RASPI_SOC           0
+#define RASPI_SOC           1
 
 #if RASPI_SOC
 
