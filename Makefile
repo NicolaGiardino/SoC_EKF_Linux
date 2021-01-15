@@ -1,4 +1,4 @@
-all:main
+all:start
 
 sub-make:
 	$(MAKE) -C ./Stub/
