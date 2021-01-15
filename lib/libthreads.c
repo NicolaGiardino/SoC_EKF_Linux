@@ -788,11 +788,7 @@ void vSnd_can(int s, struct can_frame *frame)
     * nbytes		int					Number of bytes sent
     */
 	int nbytes;
-	nbytes = read(s, frame, sizeof(struct can_frame));
-	if (nbytes < 0)
-		perror("Error can read");
-	int nbytes;
-	nbytes = write(s, frame, sizeof(CAN_MTU));
+	nbytes = write(s, frame, sizeof(struct can_frame16));
 	if (nbytes < 0)
 		perror("Error can write");
 
