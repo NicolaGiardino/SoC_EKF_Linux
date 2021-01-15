@@ -172,11 +172,11 @@ void vSetup(Kalman* k, const float T, const float* v_0)
     }
 
 
-    k->Kk   = pxCreate(X_SIZE, Y_SIZE);
+    k->Kk    = pxCreate(X_SIZE, Y_SIZE);
     k->y_p   = pxCreate(Y_SIZE, 1);
-    k->cov_y = pxCreate(Y_SIZE, Y_SIZE);
+    k->Sk    = pxCreate(Y_SIZE, Y_SIZE);
 
-    B_app    = pxCreate(X_SIZE, 1);
+    int_Gku  = pxCreate(X_SIZE, 1);
     
 }
 

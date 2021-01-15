@@ -124,8 +124,6 @@ int main(int argc, char* argv[])
     float values;
     char path[100] = { 0 };
 
-    struct sched_param param;
-
     /* Take Cell Model Parameters from files */
     for (size_t i = 0; i < PARAM_SIZE; i++)
     {
