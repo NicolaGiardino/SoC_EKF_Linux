@@ -479,7 +479,7 @@ void *pvEndThread(void *args)
     int s;
 
     s = iInit_can();
-    filter.can_id = SLAVE | ERR_MSG; /* 0b010000xxxxx */
+    filter.can_id = SLAVE | END_MSG; /* 0b010000xxxxx */
     filter.can_mask = SLAVE_MASK;
 
     vBind_can(s, filter, 1);

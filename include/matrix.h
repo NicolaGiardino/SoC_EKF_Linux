@@ -89,8 +89,7 @@
 */
 
 /* Declare Static Variables */
-typedef unsigned int __u32;
-static __u32 heap_usage = 0;
+static int heap_usage = 0;
 
 /* Declare Global Variables */
 
@@ -157,6 +156,6 @@ float    fInterp1        (float , float *, float *);
 float*   pxCsvToFloat    (const char *, int*);            
 float    fRandn          ();                              
 void     vSeed           (const float);                   
-__u32    uGetHeapUsage   ();                              
+int    uGetHeapUsage   ();                              
 
 #endif /* matrix_h */

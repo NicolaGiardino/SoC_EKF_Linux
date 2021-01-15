@@ -471,7 +471,7 @@ int iCreate_thread(struct threads* thread)
 *                                                                               *
 ********************************************************************************/
 
-void vJoin_Threads(struct threads* all_threads, int n)
+void vJoin_Threads(struct threads *all_threads, __u32 n)
 {
   for (size_t i = 0; i < n; i++)
   {

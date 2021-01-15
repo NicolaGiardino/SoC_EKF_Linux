@@ -1757,7 +1757,7 @@ float fRandn()
 *                                                                               *
 * RETURN VALUE: __u32                                                           *
 ********************************************************************************/
-__u32 uGetHeapUsage()
+int uGetHeapUsage()
 {
 
     return heap_usage;
