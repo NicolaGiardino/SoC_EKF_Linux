@@ -89,8 +89,8 @@
 */
 
 /* Declare Static Variables */
-
-static __u32 heap_usage = 0 ;
+typedef unsigned int __u32;
+static __u32 heap_usage = 0;
 
 /* Declare Global Variables */
 

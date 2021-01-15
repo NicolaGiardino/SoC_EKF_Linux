@@ -188,7 +188,7 @@ int main(int argc, char* argv[])
 
         fclose(myFile);
         j = 0;
-        printf("OK %ld\n", i);
+        printf("OK %d\n", i);
     }
 
     j = 0;
@@ -252,7 +252,7 @@ int main(int argc, char* argv[])
 
         fclose(myFile);
         j = 0;
-        printf("OK %ld\n", i);
+        printf("OK %d\n", i);
         printf("\n");
     }
 
@@ -273,12 +273,12 @@ int main(int argc, char* argv[])
     SAFE_PFUNC(mlockall(MCL_CURRENT | MCL_FUTURE));
 
     /* Create pthread */
-    SAFE_PFUNC(iCreate_thread(&kft->thread[KALMAN]));
-    SAFE_PFUNC(iCreate_thread(&kft->thread[END]));
+    SAFE_PFUNC(iCreate_thread(&kf->thread[KALMAN]));
+    SAFE_PFUNC(iCreate_thread(&kf->thread[END]));
 
     for (size_t i = 1; i < NTHREADS; i++)
     {
-        SAFE_PFUNC(pthread_join(kft->thread[i].pthread, NULL));
+        SAFE_PFUNC(pthread_join(kf->thread[i].pthread, NULL));
     }
 
     /* Unlock memory */

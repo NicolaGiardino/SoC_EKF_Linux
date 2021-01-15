@@ -103,10 +103,12 @@ int main()
         exit(0);
     }
 
+    char path[6] = "./csv";
+
     pid = fork();
     if (pid == 0)
     {
-        execv("./main", "./csv/");
+        execv("./main", path);
         perror("Error\n");
         kill(getppid(), SIGKILL);
         exit(0);
