@@ -218,7 +218,6 @@ void vKalmanLoop(Kalman* k, int s)
     for (i = 0; i < PAR * SER; i++)
         val[1] += (float)Temp[i];
     val[1] /= (PAR * SER);
-
     vPrintLCD(val);
 #endif
 
@@ -590,9 +589,9 @@ void vPrintLCD(float val[2])
 {
     lcdClear(lcdIndex);
     lcdPosition(lcdIndex, 0, 0);
-    lcdPrintf(lcdIndex, "SOC: %f", val[0] * 100);
+    lcdPrintf(lcdIndex, "SOC: %f%%", val[0] * 100);
     lcdPosition(lcdIndex, 0, 1);
-    lcdPrintf(lcdIndex, "Temp: %d", val[1]);
+    lcdPrintf(lcdIndex, "Temp: %fC", val[1]);
 }
 
 #endif
