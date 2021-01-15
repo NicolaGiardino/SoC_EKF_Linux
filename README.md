@@ -60,3 +60,11 @@ E.g.:
 
     u   __u32
  
+
+ To try the application, open two terminals. In the first one type:
+
+    ./Stub/main
+
+And in the second one:
+
+    ./main ./csv/
