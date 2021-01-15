@@ -1,7 +1,7 @@
 #############################################################################################
 # This file is part of The SoC_EKF_Linux Project.                                           #
 #                                                                                           #
-# Copyright � 2020-2021 By Nicola di Gruttola Giardino. All rights reserved.               #
+# Copyright � 2020-2021 By Nicola di Gruttola Giardino. All rights reserved.                #
 # @ mail: nicoladgg@protonmail.com                                                          #
 #                                                                                           #
 # SoC_EKF_Linux is free software: you can redistribute it and / or modify                   #
@@ -30,11 +30,17 @@ plt.plot(data1[:, 1], data1[:, 0] * 100)
 data2 = np.loadtxt('./logs/SOC_True.txt')
 
 plt.plot(data2[:, 1], data2[:, 0] * 100)
+plt.xlabel('Time')  
+plt.ylabel('Est. SOC vs True SOC')  
+plt.title("SOC graph")
 
 plt.show()
 
 err = (data2[:, 0] - data1[:, 0]) * 100
 
 plt.plot(data2[:, 1], err[:])
+plt.xlabel('Time')  
+plt.ylabel('Error')  
+plt.title("Error graph")
 
 plt.show()
