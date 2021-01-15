@@ -243,7 +243,7 @@ void vLock_memory();
 int  iCreate_thread(struct threads* thread);
 int  iCreate_thread_ss(struct threads* thread);
 void vSet_pthread_priority(struct threads *thread, const int priority);
-void vJoin_Threads(struct threads *all_threads, int n);
+void vJoin_Threads(struct threads *all_threads, __u32 n);
 void vInit_mutex(struct threads* thread);
 void vInit_mutex_cond(struct threads* thread, int ncond);
 void vDestroy_all(struct threads* thread);
