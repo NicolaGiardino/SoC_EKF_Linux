@@ -10,7 +10,7 @@ libthreads.o: ../lib/libthreads.c ../include/libthreads.h
 	gcc -Wall -Wextra -c ../lib/libthreads.c -g
 
 procedure_stub.o: ./lib/procedure_stub.c ./include/procedure_stub.h ../include/SOC_EKF.h 
-	gcc -Wall -Wextra -c ./lib/procedure.c -g
+	gcc -Wall -Wextra -c ./lib/procedure_stub.c -g
 
 main.o: main.c ./include/procedure_stub.h 
 	gcc -Wall -Wextra -c main.c
