@@ -168,7 +168,7 @@ void vStubSendData(int s, size_t i, Matrix* input)
 	if(i > 0)
 	{
 
-		filter.can_id = MASTER | DATA_MSG | addr;
+		filter.can_id = MASTER | DATA_MSG | SLAVEADDR;
 		filter.can_mask = CAN_MASK;
 		setsockopt(s, SOL_CAN_RAW, CAN_RAW_FILTER, &filter, sizeof(filter));
 		vRcv_can64(s, &f64);
@@ -250,7 +250,7 @@ void *pvStubThread(void *args)
 	printf("%d\n", input->c);
 	s = iInit_can();
 
-	filter.can_id = MASTER | REG_MSG;
+	filter.can_id = MASTER | DATA_MSG;
 	filter.can_mask = CAN_MASK;
 	vBind_can(s, filter, 1);
 
