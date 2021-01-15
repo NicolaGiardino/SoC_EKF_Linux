@@ -21,11 +21,11 @@ main.o: main.c ./include/procedure.h
 main: main.o matrix.o SOC_EKF.o libthreads.o procedure.o
 	gcc -ggdb -o main main.o matrix.o SOC_EKF.o libthreads.o procedure.o -lm -lpthread -lwiringPi -lwiringPiDev 
 
-#start.c: start.c
-#	gcc -Wall -Wextra -c start.c -g
+start.c: start.c
+	gcc -Wall -Wextra -c start.c -g
 
-#start: start.o ./main ./Stub/main
-#	gcc -ggdb -o start start.o main.o ./Stub/main.o
+start: start.o ./main ./Stub/main
+	gcc -ggdb -o start start.o
 
 clean:
 	rm -f *.o
