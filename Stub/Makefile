@@ -1,8 +1,5 @@
 all:main
 
-sub-make:
-        $(MAKE) -C ./Stub/
-
 matrix.o: ../lib/matrix.c ../include/matrix.h
 	gcc -Wall -Wextra -c ../lib/matrix.c -g
 
