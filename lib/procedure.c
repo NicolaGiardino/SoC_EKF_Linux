@@ -79,8 +79,6 @@
 
 /* Declare global variables */
 
-static int SlaveNo = 0;
-
 static float current [PAR * SER];
 static float voltage [SER];
 static int Temp      [PAR * SER];
@@ -138,12 +136,12 @@ void vKalmanLoop(Kalman* k, int s)
 
     __u64 soc = 0;
 
-    filter.can_id = SLAVE | DATA_MSG | CTS | SlaveNo; /* 0b001100SlaveNo */
+    filter.can_id = SLAVE | DATA_MSG | CTS | SLAVEADDR; /* 0b001100SlaveNo */
     filter.can_mask = SLAVE_MASK;
     setsockopt(s, SOL_CAN_RAW, CAN_RAW_FILTER, &filter, sizeof(filter));
 
     /* Send a RTS */
-    frame.can_id = MASTER | DATA_MSG | RTS | SlaveNo;
+    frame.can_id = MASTER | DATA_MSG | RTS | SLAVEADDR;
     frame.dlc = 0;
 
 #if DEBUG
@@ -237,7 +235,7 @@ void vKalmanLoop(Kalman* k, int s)
 #endif
 
     /* Send via CAN */
-    frame64.can_id = MASTER | DATA_MSG | SlaveNo;
+    frame64.can_id = MASTER | DATA_MSG | SLAVEADDR;
     frame64.dlc  = CAN_MAX_DLEN_16;
     frame64.data = soc;
     
@@ -354,12 +352,12 @@ void* pvKalmanThread(void* ktof)
     vBind_can(s, filter, 1);
 
 
-    filter.can_id = SLAVE | DATA_MSG | CTS | SlaveNo; /* 0b001100SlaveNo */
+    filter.can_id = SLAVE | DATA_MSG | CTS | SLAVEADDR; /* 0b001100SlaveNo */
     filter.can_mask = SLAVE_MASK;
     setsockopt(s, SOL_CAN_RAW, CAN_RAW_FILTER, &filter, sizeof(filter));
 
     /* Send a RTS */
-    frame.can_id = MASTER | DATA_MSG | RTS | SlaveNo;
+    frame.can_id = MASTER | DATA_MSG | RTS | SLAVEADDR;
     frame.dlc = 0;
 
 #if DEBUG

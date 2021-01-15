@@ -247,7 +247,6 @@ void *pvStubThread(void *args)
 
 	printf("[STUB] ");
 	printf("Stub Init\n");
-	printf("%d\n", input->c);
 	s = iInit_can();
 
 	filter.can_id = MASTER | DATA_MSG;
