@@ -25,7 +25,7 @@ start.c: start.c
 	gcc -Wall -Wextra -c start.c -g
 
 start: start.o ./main ./Stub/main
-	gcc -o start.o
+	gcc -ggdb -o start start.o main.o ./Stub/main.o
 
 clean:
 	rm -f *.o
