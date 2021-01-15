@@ -203,8 +203,8 @@ void vKalmanLoop(Kalman* k, int s)
     printf("EKF\n");
 #endif
 
-    EKF_Step1(k, current, Temp[0]);
-    EKF_Step2(k, voltage, Temp[0]);
+    vEKF_Step1(k, current, Temp[0]);
+    vEKF_Step2(k, voltage, Temp[0]);
     
 #if DEBUG_PRINTSOC
     printf("The soc is: %f.2%%\n", k->x->matrix[Z_IND][0] * 100);
@@ -410,7 +410,7 @@ void* pvKalmanThread(void* ktof)
 
     /* Setup KF TBD */
     printf("Setting up EKF\n");
-    Setup(&kf->k, Temp[0], voltage);
+    vSetup(&kf->k, Temp[0], voltage);
 
     /* Store variables */
     val[0] = kf->k.x->matrix[Z_IND][0];

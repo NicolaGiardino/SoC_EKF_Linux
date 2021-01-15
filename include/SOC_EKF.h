@@ -134,10 +134,10 @@ typedef struct Kalman
 
 /* Declare Prototypes */
 
-void Setup		(Kalman *, const float, const float*);
-void EKF_Step1	(Kalman *, float *, const float);
-void EKF_Step2	(Kalman *, float *, const float);
-void Delete		(Kalman *);
+void vSetup		(Kalman *, const float, const float*);
+void vEKF_Step1	(Kalman *, float *, const float);
+void vEKF_Step2	(Kalman *, float *, const float);
+void vDelete	(Kalman *);
 
 
 #endif /* SOC_EKF_h */

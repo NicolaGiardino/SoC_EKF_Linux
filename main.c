@@ -288,7 +288,7 @@ int main(int argc, char* argv[])
     vFinalStore();
 
     /* Clearing memory */
-    Delete(&kf->k);
+    vDelete(&kf->k);
     free(kf);
 
     return 0;

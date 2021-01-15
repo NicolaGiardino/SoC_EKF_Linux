@@ -104,7 +104,7 @@ static float dOCVfromSOC(const float, const float, const Matrix*);
 
 /********************************************************************************
 *                                                                               *
-* FUNCTION NAME: Setup                                                          *
+* FUNCTION NAME: vSetup                                                         *
 *                                                                               *
 * PURPOSE: This function sets the parameters up,                                *
 *           creating the matrices and                                           *
@@ -125,7 +125,7 @@ static float dOCVfromSOC(const float, const float, const Matrix*);
 *                                                                               *
 ********************************************************************************/
 
-void Setup(Kalman* k, const float T, const float* v_0)
+void vSetup(Kalman* k, const float T, const float* v_0)
 {
     
     /*
@@ -182,7 +182,7 @@ void Setup(Kalman* k, const float T, const float* v_0)
 
 /************************************************************************************************************************************
 *                                                                                                                                   *
-* FUNCTION NAME: EKF_Step1                                                                                                          *
+* FUNCTION NAME: vEKF_Step1                                                                                                         *
 *                                                                                                                                   *
 * PURPOSE:                                                                                                                          *
 *   This function is used for the Innovation step of the EKF (Kalman Filter Step 1).                                                *
@@ -201,7 +201,7 @@ void Setup(Kalman* k, const float T, const float* v_0)
 *                                                                                                                                   *
 ************************************************************************************************************************************/
 
-void EKF_Step1(Kalman* k, float* u, const float T)
+void vEKF_Step1(Kalman* k, float* u, const float T)
 {
  /* LOCAL VARIABLES:
   * Variable      Type           Description
@@ -353,7 +353,7 @@ void EKF_Step1(Kalman* k, float* u, const float T)
 
 /************************************************************************************************************************************
 *                                                                                                                                   *
-* FUNCTION NAME: EKF_Step2                                                                                                          *
+* FUNCTION NAME: vEKF_Step2                                                                                                         *
 *                                                                                                                                   *
 * PURPOSE:                                                                                                                          *
 *   This function is used for the Update step of the EKF. (Kalman Filter Step 2)                                                    *
@@ -373,7 +373,7 @@ void EKF_Step1(Kalman* k, float* u, const float T)
 *                                                                                                                                   *
 ************************************************************************************************************************************/
 
-void EKF_Step2(Kalman* k, float* y, const float T) //y is of size SER
+void vEKF_Step2(Kalman* k, float* y, const float T) //y is of size SER
 {
 
     /* LOCAL VARIABLES:
@@ -810,7 +810,7 @@ static float dOCVfromSOC(const float soc, const float T, const Matrix* OvS)
 
 /********************************************************************************
 *                                                                               *
-* FUNCTION NAME: Delete                                                         *
+* FUNCTION NAME: vDelete                                                        *
 *                                                                               *
 * PURPOSE: This function destroys the object Kalman                             *
 *                                                                               *
@@ -825,7 +825,7 @@ static float dOCVfromSOC(const float soc, const float T, const Matrix* OvS)
 * RETURN VALUE: void                                                            *
 *                                                                               *
 ********************************************************************************/
-void Delete(Kalman* k) 
+void vDelete(Kalman* k) 
 {
     vDestroy(k->Qk);
     vDestroy(k->Rk);
