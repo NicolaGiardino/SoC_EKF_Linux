@@ -566,7 +566,7 @@ int iInitLCD()
 {
 
     wiringPiSetup();
-    lcdIndex = lcdInit(2, 16, 8, LCD_RS, LCD_E, LCD_D0, LCD_D1, LCD_D2, LCD_D3, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
+    lcdIndex = lcdInit(2, 16, 8, LCD_RS, LCD_E, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
 
 }
 

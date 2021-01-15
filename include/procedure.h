@@ -64,7 +64,7 @@ struct KalmanForThread                  /* Structure containing the argument to 
 /* Declare Static Variables */
 
 static int exit_threads = 0;
-static int lcdAddress;
+static int lcdIndex;
 
 /* Declare Prototypes */
 
