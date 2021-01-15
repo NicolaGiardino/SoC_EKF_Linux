@@ -588,11 +588,11 @@ int iInitLCD()
 
 void vPrintLCD(float val[2])
 {
-    lcdClear(lcd);
-    lcdPosition(lcd, 0, 0);
-    lcdPrintf(lcd, "SOC: %f.2%%", val[0] * 100);
-    lcdPosition(lcd, 0, 1);
-    lcdPrintf(lcd, "Temp: %d°C", val[1]);
+    lcdClear(lcdIndex);
+    lcdPosition(lcdIndex, 0, 0);
+    lcdPrintf(lcdIndex, "SOC: %f.2%%", val[0] * 100);
+    lcdPosition(lcdIndex, 0, 1);
+    lcdPrintf(lcdIndex, "Temp: %d°C", val[1]);
 }
 
 #endif
