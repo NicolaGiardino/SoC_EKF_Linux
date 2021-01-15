@@ -562,7 +562,7 @@ static int iSearch_Min(float arr[], int n)
 * RETURN VALUE: void                                                            *
 *                                                                               *
 ********************************************************************************/
-int iInitLCD()
+void vInitLCD()
 {
 
     wiringPiSetup();
