@@ -1,4 +1,4 @@
-all:main
+all:main subsystem
 
 subsystem:
 	$(MAKE) -C Stub/make clean
