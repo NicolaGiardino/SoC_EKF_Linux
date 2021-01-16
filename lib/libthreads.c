@@ -533,7 +533,7 @@ void vInit_mutex(struct threads* thread)
 *                                                                               *
 ********************************************************************************/
 
-void vInit_mutex_cond(struct threads* thread, int ncond)
+void vInit_mutex_cond(struct threads* thread)
 {
 	/* LOCAL VARIABLES:
     * Variable      Type           		Description
@@ -550,7 +550,7 @@ void vInit_mutex_cond(struct threads* thread, int ncond)
     }
     SAFE_PFUNC(pthread_mutex_init(&thread->mutex, &attr));
 
-    pthread_cond_init(&thread->cond, ncond);
+    pthread_cond_init(&thread->cond, NULL);
 
     pthread_mutexattr_destroy(&attr);
 }

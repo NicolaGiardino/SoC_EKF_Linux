@@ -99,22 +99,24 @@ static int heap_usage = 0;
 *       int c and r are no. of columns and no. of rows
 */
 
-typedef struct Matrix {
+typedef struct Matrix 
+{
     float** matrix;
-    int     c;
-    int     r;
+    unsigned int     c;
+    unsigned int     r;
 }Matrix;
 
-typedef struct Vector{
+typedef struct Vector
+{
     float* vector;
-    int    n;
+    unsigned int    n;
 }Vector;
 
 /* Declare Prototypes */
 int      iZeroMat        (Matrix *);                      
-Matrix*  pxCreate        (int , int);                     
-int      iResize         (Matrix*, int , int);
-Vector*  pxVectorCreate  (int);                           
+Matrix*  pxCreate        (unsigned int , unsigned int);                     
+int      iResize         (Matrix*, unsigned int , unsigned int);
+Vector*  pxVectorCreate  (unsigned int);                           
 void     vDestroy        (Matrix *);                      
 void     vVectorDestroy  (Vector *);                      
 int      iSum            (Matrix*, Matrix *, Matrix *);   
@@ -128,7 +130,7 @@ Matrix*  pxSc_Multiply   (Matrix*, float);
 int		 iInverse        (Matrix *,Matrix *);             
 Matrix*  pxInverse       (Matrix*);                     //Not working for now             
 int      iIdentity       (Matrix *);                      
-Matrix*  pxIdentity      (int);                           
+Matrix*  pxIdentity      (unsigned int);                           
 int      iTranspose      (Matrix *, Matrix *);            
 Matrix*  pxTranspose     (Matrix*);                       
 int      iEquals         (Matrix *, Matrix *);            

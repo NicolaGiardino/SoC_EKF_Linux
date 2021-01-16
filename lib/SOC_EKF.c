@@ -82,10 +82,10 @@
 /* Declare Static Variables */
 
 
-static float           h;
+//static float           h;
 static float           i_prev[U_SIZE];
 static int             i_sign[U_SIZE];
-static float           Q_bump;
+//static float           Q_bump;
 static Matrix*         int_Gku;                         /* Used to compute G*u */                   
 static float           Parameters[PARAM_SIZE - 1];     /* Parameters at time t */
 static Matrix*         app;                         /* Used as a support variable */
@@ -229,7 +229,7 @@ void vEKF_Step1(Kalman* k, float* u, const float T)
     }
 #endif
 
-    for (size_t i = 0; i < PAR * SER; i++)
+    for (i = 0; i < PAR * SER; i++)
     {
 
         if (u[i] < 0)
@@ -254,7 +254,7 @@ void vEKF_Step1(Kalman* k, float* u, const float T)
     vPrint(k->Fk);
 #endif
 
-    for (int i = 1; i < PAR * SER; i++)
+    for (i = 1; i < PAR * SER; i++)
     {
         k->Fk->matrix[I_IND + i][I_IND + i] = Parameters[RC];
         k->Fk->matrix[H_IND + i][H_IND + i] = exp(-fabs(i_prev[i] * Parameters[G] / (3600 * Parameters[Q])));
@@ -275,7 +275,7 @@ void vEKF_Step1(Kalman* k, float* u, const float T)
     vPrint(int_Gku);
 #endif
 
-    for (int i = 1; i < PAR * SER; i++)
+    for (i = 1; i < PAR * SER; i++)
     {
 
         k->Gk->matrix[I_IND + i][i]             = 1 - Parameters[RC];
@@ -330,17 +330,17 @@ void vEKF_Step1(Kalman* k, float* u, const float T)
 
     
 
-    for (size_t i = 0; i < PAR * SER; i++)
+    for (i = 0; i < PAR * SER; i++)
     {
 
         k->y_p->matrix[i][0] = OCVfromSOC(k->x->matrix[Z_IND + i][0], T, k->OvS);
         k->y_p->matrix[i][0] = k->y_p->matrix[i][0] + (Parameters[M0] * i_sign[i] + Parameters[M] * k->x->matrix[H_IND + i][0] - Parameters[R] * k->x->matrix[I_IND + i][0] - Parameters[R0] * u[i]);
     }
 
-    for (size_t i = 0; i < SER; i++)
+    for (i = 0; i < SER; i++)
     {
         i_prev[i] = u[i];
-        for (size_t j = 0; j < PAR; j++)
+        for (j = 0; j < PAR; j++)
             i_prev[i + j] = i_prev[i];
 
     }

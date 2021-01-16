@@ -268,7 +268,7 @@ void vEndLoop(int s)
 
     vRcv_can16(s, &frame);
     printf("End message Received!\n");
-    printf("Message no. %ld\n", frame.data[0]);
+    printf("Message no. %x\n", frame.data[0]);
     printf("Sending SIGKILL\n");
 
     vKill_handler();
@@ -439,7 +439,7 @@ void* pvKalmanThread(void* ktof)
          * Modify this to make wait for the rest of the real period                 *
          * (ex it took 1ms to compute, the delta_t is 15ms, so final wait is 14ms)  *
          */
-            passed_ms.tv_nsec = lRt_gettime() - passed_ms.tv_nsec;
+        passed_ms.tv_nsec = lRt_gettime() - passed_ms.tv_nsec;
         vWait_rest_of_period(&pinfo, &passed_ms);
 
     }
@@ -463,7 +463,7 @@ void* pvKalmanThread(void* ktof)
 *                                                                               *
 ********************************************************************************/
 
-void *pvEndThread(void *args)
+void *pvEndThread()
 {
     /* LOCAL VARIABLES:
     * Variable      Type           	        Description

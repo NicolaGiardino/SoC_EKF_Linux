@@ -106,14 +106,16 @@ static int    row_scalar_multiply  (Matrix *, int , float);
 * RETURN VALUE: Matrix*                                                         *
 ********************************************************************************/
 
-Matrix* pxCreate(int r, int c)
+Matrix* pxCreate(unsigned int r, unsigned int c)
 {
     if(r<0 || c<0)
     {
         perror("Negative values");
         return NULL;
     }
-	int i;
+
+	size_t i;
+
     Matrix *m = (Matrix*) malloc(sizeof(Matrix));
 	  heap_usage += sizeof(Matrix);
     m->matrix=(float**)malloc(r*sizeof(float*));
@@ -148,7 +150,7 @@ Matrix* pxCreate(int r, int c)
 * RETURN VALUE: int                                                             *
 ********************************************************************************/
 
-int iResize(Matrix* m, int r, int c)
+int iResize(Matrix* m, unsigned int r, unsigned int c)
 {
 
     if(r<0 || c<0)
@@ -165,10 +167,11 @@ int iResize(Matrix* m, int r, int c)
 
     heap_usage -= (m->r + m->c);
 
-    int i;
+    size_t i;
 
     m->matrix=(float**)realloc(m->matrix, r*sizeof(float*));
 	  heap_usage += r*sizeof(float*);
+
     for (i=0; i < r; i++)
     {
         m->matrix[i] =(float *)realloc(m->matrix[i], c * sizeof(float));
@@ -196,7 +199,7 @@ int iResize(Matrix* m, int r, int c)
 * RETURN VALUE: Vector*                                                         *
 ********************************************************************************/
 
-Vector* pxVectorCreate(int n)
+Vector* pxVectorCreate(unsigned int n)
 {
 
     if(n<0)
@@ -256,9 +259,10 @@ void vVectorDestroy(Vector* v)
 
 void vDestroy(Matrix* m)
 {
-    if(m!=NULL){
+    if(m!=NULL)
+    {
         Matrix* p = m;
-        int i;
+        size_t i;
         for (i=0; i < p->r; i++){
 	        heap_usage -= (p->c)*sizeof(float);
 	        free(p->matrix[i]);
@@ -289,7 +293,9 @@ void vDestroy(Matrix* m)
 int iInverse(Matrix* invert,Matrix *m1)
 {
     Matrix *m;
-    unsigned int i, j, l;
+    size_t i;
+    int j;
+    size_t l;
     double factor;
 
     if(m1 == NULL)
@@ -398,8 +404,11 @@ Matrix* pxInverse (Matrix* m)
 int iZeroMat(Matrix* m)
 {
     if(m->r<0 || m->c<0)
+    {
         return -1;
-	int i,j;
+    }
+    size_t i;
+    size_t j;
     for (i=0; i<m->r; i++)
     {
         for(j=0;j<m->c;j++)
@@ -441,7 +450,8 @@ int iSum(Matrix* s, Matrix* m1, Matrix* m2)
         return -1;
     }
 
-    int i,j;
+    size_t i;
+    size_t j;
     for (i=0; i<m1->r; i++)
     {
         for (j=0; j<m1->c; j++)
@@ -505,7 +515,8 @@ int iSubtract(Matrix *s,Matrix* m1,Matrix* m2)
     if(m1->r != m2->r || m1->c != m2->c)
         return -1;
 
-	  int i,j;
+    size_t i;
+    size_t j;
     for (i=0; i<m1->r; i++)
     {
         for (j=0; j<m1->c; j++)
@@ -564,12 +575,15 @@ Matrix* pxSubtract(Matrix* m1, Matrix* m2)
 int iSc_Multiply(Matrix *s, Matrix* m1, float f)
 {
     if(m1==NULL)
+    {
         return -1;
-
+    }
 	if((s->c != m1->c) || (s->r != m1->r))
+    {
 		return -1;
-
-    int i, j;
+    }
+    size_t i;
+    size_t j;
     for (i = 0; i < m1->r; i++)
     {
         for (j = 0; j < m1->c; j++)
@@ -627,11 +641,15 @@ Matrix* pxSc_Multiply(Matrix* m, float f)
 int iEquals(Matrix* m1, Matrix* m2)
 {
     if(m1==NULL || m2==NULL)
+    {
         return -1;
-
+    }
     if(m1->r != m2->r || m1->c != m2->c)
+    {
         return -1;
-	int i,j;
+    }
+    size_t i;
+    size_t j;
     for (i=0; i<m1->r; i++)
     {
         for (j=0; j<m1->c; j++)
@@ -664,8 +682,10 @@ int iEquals(Matrix* m1, Matrix* m2)
 int iMultiply(Matrix* product,Matrix *m1, Matrix *m2)
 {
 
-    unsigned int i, j,k;
-    if(m1 == NULL || m2 == NULL)
+    size_t i;
+    size_t j;
+    size_t k;
+    if (m1 == NULL || m2 == NULL)
         return -1;
     if(m1->c != m2->r)
         return -1;
@@ -733,11 +753,15 @@ Matrix*  pxMultiply (Matrix* m1, Matrix* m2)
 int iTranspose(Matrix *t, Matrix* m)
 {
     if(m==NULL)
+    {
         return -1;
-	if((m->c != t->r) || (m->r != t->c))
-		return -1;
-
-	int i,j;
+    }
+    if((m->c != t->r) || (m->r != t->c))
+	{
+    	return -1;
+    }
+    size_t i;
+    size_t j;
     for (i=0; i<t->r; i++)
     {
         for (j=0; j<t->c; j++)
@@ -793,9 +817,11 @@ Matrix*  pxTranspose (Matrix* m)
 int iIdentity(Matrix* m)
 {
     if(m->c != m->r)	//if it's not square matrix
+    {
         return -1;
-
-	int i,j;
+    }
+    size_t i;
+    size_t j;
     for (i=0; i<m->r; i++)
     {
         for (j=0; j<m->c; j++)
@@ -820,7 +846,7 @@ int iIdentity(Matrix* m)
 * RETURN VALUE: Matrix*                                                         *
 ********************************************************************************/
 
-Matrix* pxIdentity (int n)
+Matrix* pxIdentity (unsigned int n)
 {
     Matrix* m = pxCreate(n,n);
     int check = iIdentity(m);
@@ -862,7 +888,9 @@ float fDeterminant(Matrix* m)
     float detL=0;
     float detU=0;
 
-	int i,j;
+    size_t i;
+    size_t j;
+
     for (i=0; i<m->r; i++)
     {
         float sum1=0;
@@ -904,8 +932,10 @@ int iLU(Matrix* m, Matrix* L, Matrix* U)
 
     iZeroMat(L);
     iZeroMat(U);
-	int i,j,k;
-    for (i=0; i<m->c; i++)
+    size_t i;
+    size_t j;
+    size_t k;
+    for (i = 0; i < m->c; i++)
     {
         int sum=0;
 
@@ -938,7 +968,7 @@ int iLU(Matrix* m, Matrix* L, Matrix* U)
 
 /********************************************************************************
 *                                                                               *
-* FUNCTION NAME: iEigenvalues                                                    *
+* FUNCTION NAME: iEigenvalues                                                   *
 *                                                                               *
 * PURPOSE: Computes the eigenvalues of the matrix                               *
 *            returns -1 if failed, 0 if successfull                             *
@@ -963,7 +993,7 @@ int iEigenvalues(float* values, Matrix *m)
     if(m->r != m->c)
         return -1;
     iCopy(r,m);
-    /* reduce each of the rows to get a lower triangle *//*
+    
     for(i = 0; i < r->r; i++)
     {
         for(j = i + 1; j < r->c; j++)
@@ -994,11 +1024,17 @@ int iEigenvalues(Vector* values, Matrix *m)
 {
     float factor;
     Matrix *r = pxCreate(m->r, m->c);
-    unsigned int i, j, l;
-    if(m == NULL)
+    size_t i;
+    size_t j;
+    size_t l;
+    if (m == NULL)
+    {
         return -1;
+    }
     if(m->r != m->c)
+    {
         return -1;
+    }
     iCopy(r,m);
     /* reduce each of the rows to get a lower triangle */
     for(i = 0; i < r->r; i++)
@@ -1022,8 +1058,10 @@ int iEigenvalues(Vector* values, Matrix *m)
         }
     }
     for(i = 0; i < r->r; i++)
+    {
         values->vector[i] = r->matrix[i][i];
-	vDestroy(r);
+    }
+    vDestroy(r);
     return 0;
 }
 
@@ -1045,10 +1083,13 @@ int iEigenvalues(Vector* values, Matrix *m)
 void vPrint(Matrix* m)
 {
   if(m!=NULL){
-    int i,j;
-    for (i=0; i<m->r; i++) {
-        for (j=0; j<m->c; j++) {
-            printf("%f\t",m->matrix[i][j]);
+    size_t i;
+    size_t j;
+    for (i = 0; i < m->r; i++)
+    {
+        for (j = 0; j < m->c; j++)
+        {
+            printf("%f\t", m->matrix[i][j]);
         }
         printf("\n");
     }
@@ -1074,9 +1115,11 @@ void vPrint(Matrix* m)
 void vPrintVector(Vector* v)
 {
 
+    size_t i;
+
     if (v != NULL)
     {
-        for (int i = 0; i < v->n; i++)
+        for (i = 0; i < v->n; i++)
             printf("%f\t", v->vector[i]);
         printf("\n");
     }
@@ -1105,13 +1148,15 @@ void vPrintVector(Vector* v)
 static float vec_mult(float* v1,float* v2 ,int lenght)
 {
     if(v1==NULL || v2==NULL || lenght<=0)
+    {
         return -1;
-
+    }
     float v=0;
-	int i;
-    for (i=0; i<lenght; i++)
-        v+=(v1[i]*v2[i]);
-
+    size_t i;
+    for (i = 0; i < lenght; i++)
+    {
+        v += (v1[i] * v2[i]);
+    }
     return v;
 }
 
@@ -1134,18 +1179,23 @@ static float vec_mult(float* v1,float* v2 ,int lenght)
 int iCopy(Matrix *c, Matrix* m)
 {
     if(m==NULL)
+    {
         return -1;
-
+    }
 	if(c->r != m->r)
-		return -1;
-	if(c->c != m->c)
-		return -1;
-
-	int i,j;
+	{
+    	return -1;
+    }
+    if(c->c != m->c)
+	{
+    	return -1;
+    }
+    size_t i;
+    size_t j;
     for (i=0; i<m->r; i++)
     {
         for (j=0; j<m->c; j++)
-            c->matrix[i][j]=m->matrix[i][j];
+            c->matrix[i][j] = m->matrix[i][j];
     }
 
     return 0;
@@ -1199,14 +1249,16 @@ Matrix*  pxCopy (Matrix* m)
 int iRowSwap(Matrix* m,int a,int b)
 {
     float temp;
-    unsigned int i;
+    size_t i;
 
     if(m == NULL)
+    {
         return -1;
-
+    }
     if(m->c <= a || m->c <= b)
+    {
         return -1;
-
+    }
     for(i = 0; i < m->r; i++)
     {
         temp = m->matrix[i][a];
@@ -1237,14 +1289,17 @@ int iReduce(Matrix* m,int a,int b,float f)
 {
     int i;
     if(m == NULL)
+    {
         return -1;
-
+    }
     if(m->c < a || m->c < b)
+    {
         return -1;
-
+    }
     for(i = 0; i < m->r; i++)
+    {
         m->matrix[i][b]  -= m->matrix[i][a]*f;
-
+    }
     return 0;
 }
 
@@ -1267,11 +1322,16 @@ int iReduce(Matrix* m,int a,int b,float f)
 int iChol(Matrix* L, Matrix* m)
 {
     if (L == NULL || m == NULL)
+    {
         return -1;
+    }
     if((L->r != m->r) || (L->c != m->c))
-		    return -1;
-
-	int i, j,k;
+	{
+    	    return -1;
+    }
+    size_t i;
+    size_t j;
+    size_t k;
     for (i = 0; i < L->c; i++)
     {
         for (j = 0; j < (i + 1); j++)
@@ -1336,11 +1396,15 @@ Matrix*  pxChol (Matrix* m)
 int iSqrtm(Matrix *a, Matrix* m)
 {
     if(m==NULL)
+    {
         return -1;
-	if((a->r != m->r) || (a->c != m->c))
-		return -1;
-
-	int i,j;
+    }
+    if((a->r != m->r) || (a->c != m->c))
+	{
+    	return -1;
+    }
+    size_t i;
+    size_t j;
     for (i=0; i<m->r; i++)
     {
         for (j=0; j<m->c; j++)
@@ -1376,7 +1440,9 @@ Matrix*  pxSqrtm (Matrix* m)
         return NULL;
     } 
     else
+    {
         return c;
+    }
 }
 
 /********************************************************************************
@@ -1399,14 +1465,21 @@ Matrix*  pxSqrtm (Matrix* m)
 int iExpm(Matrix* a,Matrix* m,float e)
 {
     if(m==NULL)
+    {
         return -1;
-	if((a->r != m->r) || (a->c != m->c))
-		return -1;
-	int i,j;
+    }
+    if((a->r != m->r) || (a->c != m->c))
+	{
+    	return -1;
+    }
+    size_t i;
+    size_t j;
     for (i=0; i<m->r; i++)
     {
         for (j=0; j<m->c; j++)
+        {
             a->matrix[i][j]=pow(m->matrix[i][j],e);
+        }
     }
 
     return 0;
@@ -1439,7 +1512,9 @@ Matrix*  pxExpm (Matrix *m, float f)
         return NULL;
     } 
     else
+    {
         return c;
+    }
 }
 
 /********************************************************************************
@@ -1461,13 +1536,19 @@ Matrix*  pxExpm (Matrix *m, float f)
 ********************************************************************************/
 static int row_scalar_multiply(Matrix *m, int row, float factor)
 {
-    int i;
+    size_t i;
     if(m == NULL)
+    {
         return -1;
+    }
     if(m->c <= row)
+    {
         return -1;
+    }
     for(i = 0; i < m->r; i++)
+    {
         m->matrix[i][row] *= factor;
+    }
     return 0;
 }
 
@@ -1492,25 +1573,35 @@ static int row_scalar_multiply(Matrix *m, int row, float factor)
 int iBlkdiag(Matrix*m, Matrix* m1,Matrix* m2,Matrix* m3)
 {
     if(m1==NULL || m2==NULL || m3==NULL)
+    {
         return -1;
-
+    }
     if(m1->r<0 || m1->c<0 || m2->r<0 || m2->c<0 || m3->r<0 || m3->c<0)
+    {
         return -1;
-
+    }
 	if((m->r != (m1->r + m2->r + m3->r)) || (m->c != (m1->c + m2->c + m3->c)))
-		return -1;
-
-	int i,j;
+	{
+    	return -1;
+    }
+    size_t i;
+    size_t j;
     for (i=0; i<m->r; i++)
     {
         for (j=0; j<m->c; j++)
         {
             if(j<m1->c && i<m1->r)
+            {
                 m->matrix[i][j]=m1->matrix[i][j];
+            }
             else if(j<(m1->c+m2->c) && i<(m1->r+m2->r) && j>=m1->c && i>=m1->r)
+            {
                 m->matrix[i][j]=m2->matrix[i-(m1->r)][j-(m1->c)];
+            }
             else if(j<(m1->c+m2->c+m3->c) && i<(m1->r+m2->r+m3->r) && j>=(m1->c+m2->c) && i>=(m1->r+m2->r))
+            {
                 m->matrix[i][j]=m3->matrix[i-(m1->r+m2->r)][j-(m1->c+m2->c)];
+            }
         }
     }
 
@@ -1545,7 +1636,9 @@ Matrix*  pxBlkdiag (Matrix* m1, Matrix* m2, Matrix* m3)
         return NULL;
     }
     else
+    {
         return c;
+    }
 }
 
 /********************************************************************************
@@ -1567,18 +1660,23 @@ Matrix*  pxBlkdiag (Matrix* m1, Matrix* m2, Matrix* m3)
 int iDiag(Matrix*d, Matrix* m)
 {
     if(m==NULL)
+    {
         return -1;
-
+    }
     if(m->r<0 || m->c!=1)
+    {
         return -1;
-
+    }
 	if((m->r!=d->r) || (d->c != m->r) )
-    	return -1;
-
-	int i,j;
+    {
+        return -1;
+    }
+    size_t i;
+    size_t j;
     for (i=0; i<m->r; i++)
+    {
         d->matrix[i][i]=m->matrix[i][0];
-
+    }
     return 0;
 }
 
@@ -1608,7 +1706,9 @@ Matrix*  pxDiag (Matrix* m)
         return NULL;
     } 
     else
+    {
         return c;
+    }
 }
 
 /********************************************************************************
@@ -1632,7 +1732,8 @@ Matrix*  pxDiag (Matrix* m)
 float iInterp1(float x_new, float* x, float* y)
 {
 
-    int i;
+    size_t i;
+    size_t j;
 
     for (i = 0; i < sizeof(x) && x_new <= x[i]; i++);
 
