@@ -592,7 +592,7 @@ void vPrintLCD(float val[2])
     lcdPosition(lcdIndex, 0, 0);
     lcdPrintf(lcdIndex, "SoC: %.2f%% ", val[0] * 100);
     lcdPosition(lcdIndex, 0, 1);
-    lcdPrintf(lcdIndex, "%.2fC  T+%d", val[1], tm);
+    lcdPrintf(lcdIndex, "%.2fC  T+%ds", val[1], tm);
 }
 
 #endif
