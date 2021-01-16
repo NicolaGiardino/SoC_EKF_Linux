@@ -87,7 +87,7 @@
 /* Declare Prototypes */
 
 static float  vec_mult             (float *, float *, unsigned int);
-static int    row_scalar_multiply  (Matrix *, int , float);
+static int    row_scalar_multiply  (Matrix *, unsigned int , float);
 
 /********************************************************************************
 *                                                                               *
@@ -1533,7 +1533,7 @@ Matrix*  pxExpm (Matrix *m, float f)
 *                                                                               *
 * RETURN VALUE: int                                                             *
 ********************************************************************************/
-static int row_scalar_multiply(Matrix *m, int row, float factor)
+static int row_scalar_multiply(Matrix *m, unsigned int row, float factor)
 {
     size_t i;
     if(m == NULL)

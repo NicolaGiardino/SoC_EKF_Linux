@@ -1,4 +1,0 @@
-gcc -Wall -Wextra -c ./lib/matrix.c -g 
-gcc -Wall -Wextra -c ./lib/SOC_EKF.c -g
-gcc -Wall -Wextra -c ./lib/libthreads.c -g
-gcc -Wall -Wextra -c ./lib/procedure.c -g

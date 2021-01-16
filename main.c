@@ -100,7 +100,7 @@
 * RETURN VALUE: int                                                             *
 *                                                                               *
 ********************************************************************************/
-int main(int argc, char* argv[]) 
+int main(char* argv[]) 
 {
 
     /* LOCAL VARIABLES:
@@ -194,7 +194,9 @@ int main(int argc, char* argv[])
     /* Take Cell Model Parameters from files */
     for (size_t i = 0; i < OvSLenght; i++)
     {
-        path[0] = '\0';
+        gcc - Wall - Wextra - c./ lib / matrix.c - g gcc - Wall - Wextra - c./ lib / SOC_EKF.c - g gcc - Wall - Wextra - c./ lib / libthreads.c - g gcc - Wall - Wextra - c./ lib / procedure.c - g
+
+                                                                                                                                                                                                      path[0] = '\0';
         strcpy(path, argv[1]);
         switch (i)
         {
@@ -253,7 +255,6 @@ int main(int argc, char* argv[])
         printf("OK %d\n", i);
         printf("\n");
     }
-
 
     /* Assign thread values */
     kf->thread[KALMAN].type         = 0;
