@@ -1,5 +1,4 @@
-gcc -Wall -Wextra -c ./lib/matrix.c -g
+gcc -Wall -Wextra -c ./lib/matrix.c -g 
 gcc -Wall -Wextra -c ./lib/SOC_EKF.c -g
 gcc -Wall -Wextra -c ./lib/libthreads.c -g
 gcc -Wall -Wextra -c ./lib/procedure.c -g
-gcc -ggdb -o main main.o matrix.o SOC_EKF.o libthreads.o procedure.o -lm -lpthread -lwiringPi -lwiringPiDev

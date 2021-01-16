@@ -86,7 +86,7 @@
 
 /* Declare Prototypes */
 
-static float  vec_mult             (float *, float *, int);
+static float  vec_mult             (float *, float *, unsigned int);
 static int    row_scalar_multiply  (Matrix *, int , float);
 
 /********************************************************************************
@@ -108,12 +108,6 @@ static int    row_scalar_multiply  (Matrix *, int , float);
 
 Matrix* pxCreate(unsigned int r, unsigned int c)
 {
-    if(r<0 || c<0)
-    {
-        perror("Negative values");
-        return NULL;
-    }
-
 	size_t i;
 
     Matrix *m = (Matrix*) malloc(sizeof(Matrix));
@@ -152,12 +146,6 @@ Matrix* pxCreate(unsigned int r, unsigned int c)
 
 int iResize(Matrix* m, unsigned int r, unsigned int c)
 {
-
-    if(r<0 || c<0)
-    {
-        perror("Negative values");
-        return -1;
-    }
 
     if (r < m->r || c < m->c)
     {
@@ -201,9 +189,6 @@ int iResize(Matrix* m, unsigned int r, unsigned int c)
 
 Vector* pxVectorCreate(unsigned int n)
 {
-
-    if(n<0)
-        return NULL;
 
     Vector* v = (Vector*) malloc(sizeof(Vector));
     heap_usage += sizeof(Vector);
@@ -294,15 +279,18 @@ int iInverse(Matrix* invert,Matrix *m1)
 {
     Matrix *m;
     size_t i;
-    int j;
+    size_t j;
     size_t l;
     double factor;
 
     if(m1 == NULL)
+    {
         return -1;
+    }
     if((m1)->r != (m1)->c)
+    {
         return -1;
-
+    }
     m = pxCreate(m1->r, m1->c);
     iCopy(m,m1);
     
@@ -313,7 +301,7 @@ int iInverse(Matrix* invert,Matrix *m1)
         {
             if((m)->matrix[i][i] == 0)
             {
-                for(l=i+1; l < m->c; l++)
+                for(l = i+1; l < m->c; l++)
                 {
                     if(m->matrix[l][l] != 0)
                     {
@@ -328,19 +316,19 @@ int iInverse(Matrix* invert,Matrix *m1)
             iReduce((m), i, j, factor);
         }
     }
-
+    int k;
     /* now finish the upper triangle  */
     for(i = (m)->r - 1; i > 0; i--)
     {
-        for(j = i-1; j>=0; j--)
+        for(k = i - 1; k >= 0; k--)
         {
             if((m)->matrix[i][i] == 0)
                 continue;
-            if(j == -1)
+            if(k == -1)
                 break;
-            factor = (m)->matrix[i][j]/((m)->matrix[i][i]);
-            iReduce(invert, i, j, factor);
-            iReduce((m), i, j, factor);
+            factor = (m)->matrix[i][k]/((m)->matrix[i][i]);
+            iReduce(invert, i, (unsigned int)k, factor);
+            iReduce((m), i, (unsigned int)k, factor);
         }
     }
     /* scale everything to 1 */
@@ -403,10 +391,6 @@ Matrix* pxInverse (Matrix* m)
 
 int iZeroMat(Matrix* m)
 {
-    if(m->r<0 || m->c<0)
-    {
-        return -1;
-    }
     size_t i;
     size_t j;
     for (i=0; i<m->r; i++)
@@ -510,17 +494,21 @@ Matrix* pxSum (Matrix* m1, Matrix* m2)
 int iSubtract(Matrix *s,Matrix* m1,Matrix* m2)
 {
     if(m1==NULL || m2==NULL)
+    {
         return -1;
-
+    }
     if(m1->r != m2->r || m1->c != m2->c)
+    {
         return -1;
-
+    }
     size_t i;
     size_t j;
     for (i=0; i<m1->r; i++)
     {
         for (j=0; j<m1->c; j++)
+        {
             s->matrix[i][j]=m1->matrix[i][j]-m2->matrix[i][j];
+        }
     }
 
     return 0;
@@ -587,7 +575,9 @@ int iSc_Multiply(Matrix *s, Matrix* m1, float f)
     for (i = 0; i < m1->r; i++)
     {
         for (j = 0; j < m1->c; j++)
+        {
             s->matrix[i][j] = m1->matrix[i][j] * f;
+        }
     }
 
     return 0;
@@ -686,19 +676,26 @@ int iMultiply(Matrix* product,Matrix *m1, Matrix *m2)
     size_t j;
     size_t k;
     if (m1 == NULL || m2 == NULL)
+    {
         return -1;
+    }
     if(m1->c != m2->r)
+    {
         return -1;
+    }
     if((m1->r!=product->r) || (m2->c!=product->c))
+    {
     	return -1;
-
+    }
 
     for (i = 0; i < m1->r; ++i)
     {
         for (j = 0; j < m2->c; ++j)
         {
             for (k = 0; k < m1->c; ++k)
+            {
                 product->matrix[i][j] += m1->matrix[i][k] * m2->matrix[k][j];
+            }
         }
     }
     return 0;
@@ -877,8 +874,9 @@ Matrix* pxIdentity (unsigned int n)
 float fDeterminant(Matrix* m)
 {
     if(m==NULL || (m->c!=m->r))
+    {
         return -1;
-
+    }
     Matrix* L;
     L=pxCreate(m->r,m->c);
     Matrix* U;
@@ -928,8 +926,9 @@ float fDeterminant(Matrix* m)
 int iLU(Matrix* m, Matrix* L, Matrix* U)
 {
 	if((m->c != m->r) || m==NULL) //if it's not square matrix
+    {
 		return -1;
-
+    }
     iZeroMat(L);
     iZeroMat(U);
     size_t i;
@@ -1145,7 +1144,7 @@ void vPrintVector(Vector* v)
 *                                                                               *
 * RETURN VALUE: float                                                           *
 ********************************************************************************/
-static float vec_mult(float* v1,float* v2 ,int lenght)
+static float vec_mult(float* v1,float* v2 ,unsigned int lenght)
 {
     if(v1==NULL || v2==NULL || lenght<=0)
     {
@@ -1246,7 +1245,7 @@ Matrix*  pxCopy (Matrix* m)
 *                                                                               *
 * RETURN VALUE: int                                                             *
 ********************************************************************************/
-int iRowSwap(Matrix* m,int a,int b)
+int iRowSwap(Matrix* m, unsigned int a, unsigned int b)
 {
     float temp;
     size_t i;
@@ -1285,9 +1284,9 @@ int iRowSwap(Matrix* m,int a,int b)
 *                                                                               *
 * RETURN VALUE: int                                                             *
 ********************************************************************************/
-int iReduce(Matrix* m,int a,int b,float f)
+int iReduce(Matrix* m, unsigned int a, unsigned int b,float f)
 {
-    int i;
+    size_t i;
     if(m == NULL)
     {
         return -1;
@@ -1576,10 +1575,6 @@ int iBlkdiag(Matrix*m, Matrix* m1,Matrix* m2,Matrix* m3)
     {
         return -1;
     }
-    if(m1->r<0 || m1->c<0 || m2->r<0 || m2->c<0 || m3->r<0 || m3->c<0)
-    {
-        return -1;
-    }
 	if((m->r != (m1->r + m2->r + m3->r)) || (m->c != (m1->c + m2->c + m3->c)))
 	{
     	return -1;
@@ -1663,16 +1658,11 @@ int iDiag(Matrix*d, Matrix* m)
     {
         return -1;
     }
-    if(m->r<0 || m->c!=1)
-    {
-        return -1;
-    }
 	if((m->r!=d->r) || (d->c != m->r) )
     {
         return -1;
     }
     size_t i;
-    size_t j;
     for (i=0; i<m->r; i++)
     {
         d->matrix[i][i]=m->matrix[i][0];
@@ -1733,7 +1723,6 @@ float iInterp1(float x_new, float* x, float* y)
 {
 
     size_t i;
-    size_t j;
 
     for (i = 0; i < sizeof(x) && x_new <= x[i]; i++);
 

@@ -73,7 +73,7 @@ int iGetExit();
 
 /* Threads Prototypes */
 void* pvKalmanThread(void* arg);
-void* pvEndThread(void* arg);
+void* pvEndThread();
 
 /* Periodic and Aperiodic Functions*/
 void vKalmanLoop(Kalman* k, int s);
