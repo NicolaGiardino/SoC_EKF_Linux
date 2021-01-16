@@ -100,7 +100,7 @@
 * RETURN VALUE: int                                                             *
 *                                                                               *
 ********************************************************************************/
-int main(char* argv[]) 
+int main(int argc, char* argv[]) 
 {
 
     /* LOCAL VARIABLES:
@@ -193,10 +193,7 @@ int main(char* argv[])
     n = 0;
     /* Take Cell Model Parameters from files */
     for (size_t i = 0; i < OvSLenght; i++)
-    {
-        gcc - Wall - Wextra - c./ lib / matrix.c - g gcc - Wall - Wextra - c./ lib / SOC_EKF.c - g gcc - Wall - Wextra - c./ lib / libthreads.c - g gcc - Wall - Wextra - c./ lib / procedure.c - g
-
-                                                                                                                                                                                                      path[0] = '\0';
+    {                                                                                                                                                                                        path[0] = '\0';
         strcpy(path, argv[1]);
         switch (i)
         {
