@@ -1,4 +1,4 @@
-all:start
+all:main
 
 matrix.o: ./lib/matrix.c ./include/matrix.h
 	gcc -Wall -Wextra -c ./lib/matrix.c -g
