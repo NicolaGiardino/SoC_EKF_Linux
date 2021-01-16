@@ -584,14 +584,15 @@ void vInitLCD()
 * RETURN VALUE: int                                                             *
 *                                                                               *
 ********************************************************************************/
-
+int time = 0;
 void vPrintLCD(float val[2])
 {
+    time++;
     lcdClear(lcdIndex);
     lcdPosition(lcdIndex, 0, 0);
-    lcdPrintf(lcdIndex, "SOC: %.2f%%", val[0] * 100);
+    lcdPrintf(lcdIndex, "SoC: %.2f%% ", val[0] * 100);
     lcdPosition(lcdIndex, 0, 1);
-    lcdPrintf(lcdIndex, "Temp: %.2fC", val[1]);
+    lcdPrintf(lcdIndex, "%.2fC  T+%d", val[1], time);
 }
 
 #endif
