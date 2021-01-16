@@ -275,35 +275,32 @@ void vDestroy(Matrix* m)
 *                                                                               *
 * RETURN VALUE: int                                                             *
 ********************************************************************************/
-int iInverse(Matrix* invert,Matrix *m1)
+int iInverse(Matrix *invert, Matrix *m)
 {
-    Matrix *m;
     size_t i;
     size_t j;
     size_t l;
-    double factor;
 
-    if(m1 == NULL)
+    float factor;
+
+    if (m == NULL)
     {
-        return -1;
+        return NULL;
     }
-    if((m1)->r != (m1)->c)
+    if ((m)->r != (m)->c)
     {
-        return -1;
+        return NULL;
     }
-    m = pxCreate(m1->r, m1->c);
-    iCopy(m,m1);
-    
     /* reduce each of the rows to get a lower triangle */
-    for(i = 0; i < (m)->r; i++)
+    for (i = 0; i < (m)->r; i++)
     {
-        for(j = i + 1; j < (m)->c; j++)
+        for (j = i + 1; j < (m)->c; j++)
         {
-            if((m)->matrix[i][i] == 0)
+            if ((m)->matrix[i][i] == 0)
             {
-                for(l = i+1; l < m->c; l++)
+                for (l = i + 1; l < m->c; l++)
                 {
-                    if(m->matrix[l][l] != 0)
+                    if (m->matrix[l][l] != 0)
                     {
                         iRowSwap(m, i, l);
                         break;
@@ -311,36 +308,37 @@ int iInverse(Matrix* invert,Matrix *m1)
                 }
                 continue;
             }
-            factor = (m)->matrix[i][j]/((m)->matrix[i][i]);
+            factor = (m)->matrix[i][j] / ((m)->matrix[i][i]);
             iReduce(invert, i, j, factor);
             iReduce((m), i, j, factor);
         }
     }
-    int k;
+
     /* now finish the upper triangle  */
-    for(i = (m)->r - 1; i > 0; i--)
+    for (i = (m)->r - 1; i > 0; i--)
     {
-        for(k = i - 1; k >= 0; k--)
+        for (j = i - 1; j >= 0; j--)
         {
-            if((m)->matrix[i][i] == 0)
+            if ((m)->matrix[i][i] == 0)
                 continue;
-            if(k == -1)
+            if (j == -1)
                 break;
-            factor = (m)->matrix[i][k]/((m)->matrix[i][i]);
-            iReduce(invert, i, (unsigned int)k, factor);
-            iReduce((m), i, (unsigned int)k, factor);
+            factor = (m)->matrix[i][j] / ((m)->matrix[i][i]);
+            iReduce(invert, i, j, factor);
+            iReduce((m), i, j, factor);
         }
     }
+
     /* scale everything to 1 */
-    for(i = 0; i < (m)->r; i++)
+    for (i = 0; i < (m)->r; i++)
     {
-        if((m)->matrix[i][i]==0)
+        if ((m)->matrix[i][i] == 0)
             continue;
-        factor = 1/((m)->matrix[i][i]);
+        factor = 1 / ((m)->matrix[i][i]);
         row_scalar_multiply(invert, i, factor);
         row_scalar_multiply((m), i, factor);
     }
-    vDestroy(m);
+
     return 0;
 }
 
@@ -359,14 +357,15 @@ int iInverse(Matrix* invert,Matrix *m1)
 * RETURN VALUE: Matrix*                                                         *
 ********************************************************************************/
 
-Matrix* pxInverse (Matrix* m)
+Matrix *pxInverse(Matrix *m)
 {
-    Matrix* inv = pxCreate(m->r, m->c);
-    int check = iInverse(inv,m);
-
-    if(check<0)
+    Matrix *inv = pxIdentity((m)->c);
+    int check = iInverse(inv, m);
+    
+    if (check < 0)
     {
         vDestroy(inv);
+        perror("Error Inverse");
         return NULL;
     }
     else

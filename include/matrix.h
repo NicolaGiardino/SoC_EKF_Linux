@@ -128,7 +128,7 @@ Matrix*  pxSubtract      (Matrix*, Matrix*);
 int      iSc_Multiply    (Matrix*, Matrix *, float);      
 Matrix*  pxSc_Multiply   (Matrix*, float);                
 int		 iInverse        (Matrix *,Matrix *);             
-Matrix*  pxInverse       (Matrix*);                     //Not working for now             
+Matrix*  pxInverse       (Matrix*);                                
 int      iIdentity       (Matrix *);                      
 Matrix*  pxIdentity      (unsigned int);                           
 int      iTranspose      (Matrix *, Matrix *);            
