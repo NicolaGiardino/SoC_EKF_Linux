@@ -516,6 +516,9 @@ void vEKF_Step2(Kalman* k, float* y, const float T) //y is of size SER
     /* Check if values are between ranges */
     for (i = 0; i < PAR * SER; i++)
     {
+        c_assert((k->x->matrix[Z_IND + i][0] > 1.2) || (k->x->matrix[Z_IND + i][0] < -0.2));
+        c_assert((k->x->matrix[H_IND + i][0] > 1.2) || (k->x->matrix[H_IND + i][0] < -1.2));
+        
         if (k->x->matrix[Z_IND + i][0] > 1) k->x->matrix[Z_IND + i][0] = 1;
         if (k->x->matrix[Z_IND + i][0] < 0) k->x->matrix[Z_IND + i][0] = 0;
         if (k->x->matrix[H_IND + i][0] > 1) k->x->matrix[H_IND + i][0] = 1;
@@ -535,21 +538,12 @@ void vEKF_Step2(Kalman* k, float* y, const float T) //y is of size SER
     printf("Pk\n");
     vPrint(k->Pk);
 #endif
+
     vDestroy(app);
     vDestroy(app2);
     vDestroy(app3);
     vDestroy(t1);
 
-    /* If I have a bad voltage estimate I'm going to bump up SigmaX by mupltiplying it with Q param 
-    for (i = 0; i < SER; i++)
-    {
-        for (j = 0; j < PAR; j++)
-        {
-            if (((y[i] - y_p->matrix[i * PAR + j][0]) * (y[i] - y_p->matrix[i * PAR + j][0])) > 4 * Sk->matrix[i * PAR + j][i * PAR + j])
-                k->Pk->matrix[Z_IND + i * PAR + j][Z_IND + i * PAR + j] *= Q_bump;
-        }
-    }*/
-    
     #if DEBUG3
         printf("Kalman Filter Step 2 End\n");
     #endif
