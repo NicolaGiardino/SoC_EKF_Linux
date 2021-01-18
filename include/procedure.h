@@ -22,6 +22,31 @@
 #ifndef PROCEDURE_H
 #define PROCEDURE_H
 
+/***************************************************************************************************
+*   FILENAME:  procedure.h                                                                         *
+*                                                                                                  *
+*                                                                                                  *
+*   PURPOSE:   Library that defines the procedure the application will follow,                     *
+*               declaring the threads and their periodic and/or aperiodic functions                *
+*                                                                                                  *
+*                                                                                                  *
+*                                                                                                  *
+*   GLOBAL VARIABLES:                                                                              *
+*                                                                                                  *
+*                                                                                                  *
+*   Variable        Type        Description                                                        *
+*   --------        ----        -------------------                                                *
+*   m               Kalman      Kalman object		                                               *
+*                                                                                                  *
+*   DEVELOPMENT HISTORY :                                                                          *
+*                                                                                                  *
+*                                                                                                  *
+*   Date          Author            Change Id     Release     Description Of Change                *
+*   ----          ------            -------- -    ------      ----------------------               *
+*   08-07-2020    N.di Gruttola                     1         Project created				       *
+*                  Giardino																		   *
+*                                                                                                  *
+***************************************************************************************************/
 
 /* Include Global Parameters */
 #include "SOC_EKF.h"

@@ -81,11 +81,8 @@
 
 /* Declare Static Variables */
 
-
-//static float           h;
 static float           i_prev[U_SIZE];
 static int             i_sign[U_SIZE];
-//static float           Q_bump;
 static Matrix*         int_Gku;                         /* Used to compute G*u */                   
 static float           Parameters[PARAM_SIZE - 1];     /* Parameters at time t */
 static Matrix*         app;                         /* Used as a support variable */
@@ -95,12 +92,12 @@ static Matrix*         app4;                        /* Used as a support variabl
 static Matrix*         t1;                          /* Used as a support variable */
 static Matrix*         t2;                          /* Used as a support variable */
 
-/* Declare Prototypes */
+/* Declare Static Function's Prototypes */
 
-static void  getParam(float*, const float, const Matrix*);
-static float SOCfromOCV(const float, const float, const Matrix*);
-static float OCVfromSOC(const float, const float, const Matrix*);
-static float dOCVfromSOC(const float, const float, const Matrix*);
+static void  vGetParam(float*, const float, const Matrix*);
+static float fSOCfromOCV(const float, const float, const Matrix*);
+static float fOCVfromSOC(const float, const float, const Matrix*);
+static float fDOCVfromSOC(const float, const float, const Matrix*);
 
 /********************************************************************************
 *                                                                               *
@@ -127,11 +124,6 @@ static float dOCVfromSOC(const float, const float, const Matrix*);
 
 void vSetup(Kalman* k, const float T, const float* v_0)
 {
-    
-    /*
-     *  The variables names need to be changed in those commented after the var creation. *
-     *  They're the official Kalman variables and so they must be used                    *
-     */
 
     k->x        = pxCreate(X_SIZE, 1);
     k->Pk       = pxCreate(X_SIZE, X_SIZE);     
@@ -164,7 +156,7 @@ void vSetup(Kalman* k, const float T, const float* v_0)
     for (size_t i = 0; i < SER; i++)
     {
 
-        k->x->matrix[Z_IND + i * PAR][0] = SOCfromOCV(v_0[i] , T, k->OvS);
+        k->x->matrix[Z_IND + i * PAR][0] = fSOCfromOCV(v_0[i] , T, k->OvS);
 
         for (int j = 1; j < PAR; j++)
             k->x->matrix[Z_IND + i * PAR + j][0] = k->x->matrix[Z_IND + i * PAR][0];
@@ -219,7 +211,7 @@ void vEKF_Step1(Kalman* k, float* u, const float T)
     size_t j;
 
     /* EKF Step1 Setup */
-    getParam(Parameters, T, k->Param);
+    vGetParam(Parameters, T, k->Param);
 
     Parameters[RC] = exp(-DeltaT / fabs(Parameters[RC]));
 #if DEBUG_PRINT
@@ -333,7 +325,7 @@ void vEKF_Step1(Kalman* k, float* u, const float T)
     for (i = 0; i < PAR * SER; i++)
     {
 
-        k->y_p->matrix[i][0] = OCVfromSOC(k->x->matrix[Z_IND + i][0], T, k->OvS);
+        k->y_p->matrix[i][0] = fOCVfromSOC(k->x->matrix[Z_IND + i][0], T, k->OvS);
         k->y_p->matrix[i][0] = k->y_p->matrix[i][0] + (Parameters[M0] * i_sign[i] + Parameters[M] * k->x->matrix[H_IND + i][0] - Parameters[R] * k->x->matrix[I_IND + i][0] - Parameters[R0] * u[i]);
     }
 
@@ -395,7 +387,7 @@ void vEKF_Step2(Kalman* k, float* y, const float T) //y is of size SER
 
     for (i = 0; i < PAR * SER; i++)
     {
-        k->Hk->matrix[i][Z_IND + i] = dOCVfromSOC(k->x->matrix[Z_IND + i][0], T, k->OvS);
+        k->Hk->matrix[i][Z_IND + i] = fDOCVfromSOC(k->x->matrix[Z_IND + i][0], T, k->OvS);
         k->Hk->matrix[i][H_IND + i] = Parameters[M];
     	k->Hk->matrix[i][I_IND + i] = -Parameters[R];
         k->D->matrix[i][i]          = 1;
@@ -552,7 +544,7 @@ void vEKF_Step2(Kalman* k, float* y, const float T) //y is of size SER
 
 /********************************************************************************
 *                                                                               *
-* FUNCTION NAME: getParam                                                       *
+* FUNCTION NAME: vGetParam                                                      *
 *                                                                               *
 * PURPOSE: This function returns the Parameters based on Temperature            *
 *                                                                               *
@@ -567,7 +559,7 @@ void vEKF_Step2(Kalman* k, float* y, const float T) //y is of size SER
 * RETURN VALUE: void                                                            *
 *                                                                               *
 ********************************************************************************/
-static void getParam(float* Params, const float T, const Matrix* P)
+static void vGetParam(float* Params, const float T, const Matrix* P)
 {
     /* LOCAL VARIABLES:
      * Variable      Type    Description
@@ -608,7 +600,7 @@ static void getParam(float* Params, const float T, const Matrix* P)
 
 /********************************************************************************
 *                                                                               *
-* FUNCTION NAME: SOCfromOCV                                                     *
+* FUNCTION NAME: fSOCfromOCV                                                    *
 *                                                                               *
 * PURPOSE: Computing State of Charge starting from Open Circuit Voltage         *
 *  Computing state of charge by interpolation. Using the function:              *
@@ -628,7 +620,7 @@ static void getParam(float* Params, const float T, const Matrix* P)
 *             being cell's SOC                                                  *
 *                                                                               *
 ********************************************************************************/
-static float SOCfromOCV(const float ocv, const float T, const Matrix* OvS)
+static float fSOCfromOCV(const float ocv, const float T, const Matrix* OvS)
 {
     /* LOCAL VARIABLES:
      * Variable      Type    Description
@@ -674,7 +666,7 @@ static float SOCfromOCV(const float ocv, const float T, const Matrix* OvS)
 
 /********************************************************************************
 *                                                                               *
-* FUNCTION NAME: SOCfromOCV                                                     *
+* FUNCTION NAME: fSOCfromOCV                                                    *
 *                                                                               *
 * PURPOSE: Computing Open Circuit Voltage starting from State of Charge         *
 *  Computing state of charge by interpolation. Using the function:              *
@@ -694,7 +686,7 @@ static float SOCfromOCV(const float ocv, const float T, const Matrix* OvS)
 *             being cell's OCV                                                  *
 *                                                                               *
 ********************************************************************************/
-static float OCVfromSOC(const float soc, const float T, const Matrix* OvS)
+static float fOCVfromSOC(const float soc, const float T, const Matrix* OvS)
 {
     /* LOCAL VARIABLES:
      * Variable      Type    Description
@@ -738,14 +730,14 @@ static float OCVfromSOC(const float soc, const float T, const Matrix* OvS)
 
 /********************************************************************************
 *                                                                               *
-* FUNCTION NAME: dOCVfromSOC                                                    *
+* FUNCTION NAME: fDOCVfromSOC                                                   *
 *                                                                               *
 * PURPOSE: Computing derivative of Open Circuit Voltage                         *
 *           starting from State of Charge                                       *
 *  Computing state of charge by interpolation. Using the function:              *
 *      y=(x-x1)(y1-y0)/(x1-x0)+y0                                               *
 *  Where y is SOC, computed as:                                                 *
-*      dOCV(z,t)=dOCV0(z)+T*dOCVrel(z)                                             *
+*      dOCV(z,t)=dOCV0(z)+T*dOCVrel(z)                                          *
 *                                                                               *
 * ARGUMENT LIST:                                                                *
 *                                                                               *
@@ -753,13 +745,13 @@ static float OCVfromSOC(const float soc, const float T, const Matrix* OvS)
 * --------- --------      --     ---------------------------------              *
 * soc       const float   I      SOC at time t                                  *
 * T         const float   I      Temperature of the cell                        *
-* OvS       const Matrix* I      Matrix of dOCV vs SOC                           *
+* OvS       const Matrix* I      Matrix of dOCV vs SOC                          *
 *                                                                               *
-* RETURN VALUE: docv                                                             *
-*             being cell's dOCV                                                  *
+* RETURN VALUE: docv                                                            *
+*             being cell's dOCV                                                 *
 *                                                                               *
 ********************************************************************************/
-static float dOCVfromSOC(const float soc, const float T, const Matrix* OvS)
+static float fDOCVfromSOC(const float soc, const float T, const Matrix* OvS)
 {
     /* LOCAL VARIABLES:
      * Variable      Type    Description

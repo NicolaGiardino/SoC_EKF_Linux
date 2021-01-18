@@ -114,7 +114,7 @@ typedef struct Vector
 
 /* Declare Prototypes */
 int      iZeroMat        (Matrix *);                      
-Matrix*  pxCreate        (unsigned int , unsigned int);                     
+Matrix*  pxCreate        (unsigned int , unsigned int);
 int      iResize         (Matrix*, unsigned int , unsigned int);
 Vector*  pxVectorCreate  (unsigned int);                           
 void     vDestroy        (Matrix *);                      

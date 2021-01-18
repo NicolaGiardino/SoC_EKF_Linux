@@ -22,6 +22,31 @@
 #ifndef LIBTHREADS_H
 #define LIBTHREADS_H
 
+/***************************************************************************************************
+*   FILENAME:  libthreads.h                                                                        *
+*                                                                                                  *
+*                                                                                                  *
+*   PURPOSE:   Library that defines the function for thread creation and usage, also CAN 		   *
+				interface usage, timing and datalogging						                       *
+*                                                                                                  *
+*                                                                                                  *
+*                                                                                                  *
+*   GLOBAL VARIABLES:                                                                              *
+*                                                                                                  *
+*                                                                                                  *
+*   Variable        Type        Description                                                        *
+*   --------        ----        -------------------                                                *
+*   m               Kalman      Kalman object		                                               *
+*                                                                                                  *
+*   DEVELOPMENT HISTORY :                                                                          *
+*                                                                                                  *
+*                                                                                                  *
+*   Date          Author            Change Id     Release     Description Of Change                *
+*   ----          ------            -------- -    ------      ----------------------               *
+*   08-07-2020    N.di Gruttola                     1         Project created				       *
+*                  Giardino																		   *
+*                                                                                                  *
+***************************************************************************************************/
 /* Include Global Parameters */
 
 #include <sys/syscall.h>
