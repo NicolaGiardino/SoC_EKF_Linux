@@ -166,7 +166,8 @@
 /* Declare Global Variables */
 
 /* Structure containing all necessary variables for threads */
-struct threads {
+struct threads 
+{
 
 	int 			type;							/* Type of thread, see macros */
 	pthread_t 		pthread;							/* pthread identifier */
