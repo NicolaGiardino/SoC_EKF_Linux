@@ -279,9 +279,9 @@ void vBind_can(int s, struct can_filter rfilter, int hasFilter);
 void vRcv_can(int s, struct can_frame* frame);
 void vRcv_can16(int s, struct can_frame16 *frame);
 void vRcv_can64(int s, struct can_frame64* frame);
-void vSnd_can(int s, struct can_frame *frame);
-void vSnd_can16(int s, struct can_frame16 *frame);
-void vSnd_can64(int s, struct can_frame64 *frame);
+void vSnd_can(int s, const struct can_frame *frame);
+void vSnd_can16(int s, const struct can_frame16 *frame);
+void vSnd_can64(int s, const struct can_frame64 *frame);
 void vDestroy_can(int s);
 
 #endif

@@ -780,7 +780,7 @@ void vRcv_can64(int s, struct can_frame64* frame)
 *                                                                               *
 ********************************************************************************/
 
-void vSnd_can(int s, struct can_frame *frame)
+void vSnd_can(int s, const struct can_frame *frame)
 {
 	/* LOCAL VARIABLES:
     * Variable      Type           		Description
@@ -810,7 +810,7 @@ void vSnd_can(int s, struct can_frame *frame)
 *                                                                               *
 ********************************************************************************/
 
-void vSnd_can16(int s, struct can_frame16* frame)
+void vSnd_can16(int s, const struct can_frame16* frame)
 {
 	/* LOCAL VARIABLES:
     * Variable      Type           		Description
@@ -840,7 +840,7 @@ void vSnd_can16(int s, struct can_frame16* frame)
 *                                                                               *
 ********************************************************************************/
 
-void vSnd_can64(int s, struct can_frame64* frame)
+void vSnd_can64(int s, const struct can_frame64* frame)
 {
 	/* LOCAL VARIABLES:
     * Variable      Type           		Description
