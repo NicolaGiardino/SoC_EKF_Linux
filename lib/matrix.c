@@ -881,6 +881,7 @@ float fDeterminant(Matrix* m)
     Matrix* U;
     U=pxCreate(m->r,m->c);
 
+    iLU(m, L, U);
 
     float detL=0;
     float detU=0;
