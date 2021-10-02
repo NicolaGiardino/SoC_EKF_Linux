@@ -578,7 +578,7 @@ static void vGetParam(float* Params, const float T, const Matrix* P)
     }
     else if (T >= P->matrix[TEMP][P->c-1]) 
     {
-        for (size_t i = 0; i < PARAM_SIZE; i++)
+        for (i = 0; i < PARAM_SIZE; i++)
             Params[i] = P->matrix[i][P->c];
     }
     else {
@@ -589,7 +589,7 @@ static void vGetParam(float* Params, const float T, const Matrix* P)
                 break;
         }
 
-        for (size_t i = 0; i < PARAM_SIZE - 1; i++)
+        for (i = 0; i < PARAM_SIZE - 1; i++)
             Params[i] = P->matrix[i][j];
 
     }
